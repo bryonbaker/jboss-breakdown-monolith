@@ -28,12 +28,17 @@ You should now have 2 places where this is unzipped like so
 a. Postgres Driver
 In the jboss-eap-7.4/bin directory
 wget https://jdbc.postgresql.org/download/postgresql-42.5.0.jar
+
 Start the server in the background
 ./standalone.sh &
+
 Invoke the CLI and connect to the management console and add the postgressql module and datasource driver
+
 ./jboss-cli.sh --connect
+
 module add --name=org.postgresql --resources=postgresql-42.5.0.jar --dependencies=javax.api,javax.transaction.api
 /subsystem=datasources/jdbc-driver=postgres:add(driver-name=postgresql,driver-module-name=org.postgresql,driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)
+
 
 Now shutdown the server and exit from the CLI
 shutdown
@@ -41,10 +46,14 @@ exit
 
 b. For Server 2 - Postgres Datasource
 The following needs to be added to standalone.xml after the datasources 
+
+```xml
+
 <subsystem xmlns="urn:jboss:domain:datasources:6.0">
 <datasources>
-....
-------------------
+
+
+
 <datasource jndi-name="java:jboss/datasources/KitchensinkEarQuickstartPGDS" pool-name="kitchensink-quickstartpg" enabled="true" use-java-context="true">
                     <connection-url>jdbc:postgresql://localhost:5432/postgresdb</connection-url>
                     <driver>postgresql</driver>
@@ -52,9 +61,9 @@ The following needs to be added to standalone.xml after the datasources
                         <user-name>postgres</user-name>
                         <password>mypassword123</password>
                     </security>
-                </datasource>
+                </datasource>"
 
-------------------
+```
 
 Run a containerised postgres on the VM matching the values in the datasource like so
 docker run --rm=true --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgresdb -p 5432:5432 postgres
