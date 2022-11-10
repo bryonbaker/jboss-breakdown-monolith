@@ -41,7 +41,12 @@ public class MemberRegistration implements MemberRegistrationIF {
 
     @Override
     public void register(Member member) throws Exception {
-        log.info("Registering " + member.getName());
-        em.persist(member);
+        try {
+            log.info("Registering " + member.getName());
+            em.persist(member);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(e.getMessage());
+        }
     }
 }
