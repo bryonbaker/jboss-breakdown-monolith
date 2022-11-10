@@ -84,11 +84,11 @@ For server 2 deploy the kitchensink-ear (this contains the EJB and backend and w
 
 4. Start the postgres database on localhost via docker or otherwise
 
-5. Start server 1
+5. Start server 2
 ./standalone.sh
 
 
-6. Start server 2 with an offset
+6. Start server 1 with an offset
 ./standalone.sh -Djboss.socket.binding.port-offset=100 &
 
 7. Navigate to the frontend 
