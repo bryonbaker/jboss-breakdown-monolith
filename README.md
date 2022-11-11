@@ -16,8 +16,8 @@ There is work left to do in paramertising values and containerising for OpenShif
 
 To demonstrate it running it on EAP servers in a VM the following steps are required.
 
-1. Download EAP 7.4 and unzip twice into different directories
-https://developers.redhat.com/products/eap/download
+1. Download EAP 7.4 Zip file and unzip twice into different directories. The ZIP file is located at the following URL: https://developers.redhat.com/products/eap/download
+Scroll down to the 7.4.0 release and click **Download** on the Zip file. 
 
 You should now have 2 places where this is unzipped like so
 /jboss-eap-7.4-2/
