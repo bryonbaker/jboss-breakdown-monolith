@@ -36,9 +36,11 @@ Invoke the CLI and connect to the management console and add the postgressql mod
 
 ```./jboss-cli.sh --connect```  
 
-```module add --name=org.postgresql --resources=postgresql-42.5.0.jar --dependencies=javax.api,javax.transaction.api```  
+```
+module add --name=org.postgresql --resources=postgresql-42.5.0.jar --dependencies=javax.api,javax.transaction.api```  
 
-```/subsystem=datasources/jdbc-driver=postgresql:add(driver-name=postgresql,driver-module-name=org.postgresql,driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)```
+```/subsystem=datasources/jdbc-driver=postgresql:add(driver-name=postgresql,driver-module-name=org.postgresql,driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)
+```
 
 
 Now shutdown the server and exit from the CLI  
@@ -64,6 +66,13 @@ The following needs to be added to standalone.xml after the datasources
                     </security>
                 </datasource>
 
+```
+
+Locate the ```<drivers>``` tag and insert the following driver under the ```<driver name="h2" module="com.h2database.h2">``` driver.
+```xml
+    <driver name="postgresql" module="org.postgresql">
+        <xa-datasource-class>org.postgresql.xa.PGXADataSource</xa-datasource-class>
+    </driver>
 ```
 
 Update the file: ```./standalone/configuration/standalone.xml```  
