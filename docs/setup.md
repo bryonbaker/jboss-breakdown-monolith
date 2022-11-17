@@ -8,7 +8,7 @@ The intention is to demonstrate Red Hat Application Interconnect in how a monoli
 
 There is work left to do in paramertising values and containerising for OpenShift.
 
-![Front screen](frontscreen.png)
+![Front screen](./images/frontscreen.png)
 
 
 To demonstrate it running it on EAP servers in a VM the following steps are required.
