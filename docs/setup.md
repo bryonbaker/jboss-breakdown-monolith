@@ -1,7 +1,4 @@
-# jboss-breakdown-monolith
-An example of splitting the monolith to allow independence between layers in deployment and scaling
-
-
+# Setup Instructions
 This project has started with the JBoss 7.4 kitchensink quickstart and sought to split the web and ejb components. 
 
 The are independently deployable EAR files and the web component uses http remoting to lookup EJBs on localhost:8080 as
