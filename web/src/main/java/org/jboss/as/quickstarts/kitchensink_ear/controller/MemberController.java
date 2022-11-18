@@ -72,9 +72,9 @@ public class MemberController {
 
     private MemberRegistrationIF lookupMemberRegistration() throws NamingException {
         final Hashtable jndiProperties = new Hashtable();
-        //jndiProperties.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
         jndiProperties.put(Context.INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");
-        jndiProperties.put(Context.PROVIDER_URL,"remote+http://localhost:8080");
+        String backend_provider_url = System.getenv("BACKEND_PROVIDER_URL");
+        jndiProperties.put(Context.PROVIDER_URL,backend_provider_url);
         Context context = new InitialContext(jndiProperties);
         return (MemberRegistrationIF) context.lookup("ejb:kitchensink-ear/kitchensink-ear-ejb/MemberRegistration!org.jboss.as.quickstarts.kitchensink_ear.service.MemberRegistrationIF");
     }

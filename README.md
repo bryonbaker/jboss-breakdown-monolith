@@ -108,6 +108,12 @@ For server 2 deploy the kitchensink-ear (this contains the EJB and backend and w
 
 4. Start the postgres database on localhost via docker or otherwise
 
+
+The following environment variables need to be set 
+
+export POSTGRES_SERVICE_HOST=localhost
+export BACKEND_PROVIDER_URL=remote+http://localhost:8080
+
 5. Start server 2
 ./standalone.sh
 
@@ -125,5 +131,4 @@ http://localhost:8180/kitchensink-ear-web
 /subsystem=ee:write-attribute(name=jboss-descriptor-property-replacement,value=true)
 /subsystem=ee:write-attribute(name=spec-descriptor-property-replacement,value=true)
 
-   
-   
+
