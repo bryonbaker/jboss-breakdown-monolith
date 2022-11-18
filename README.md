@@ -60,11 +60,11 @@ The following needs to be added to standalone.xml after the datasources
 
 ```xml
 <datasource jndi-name="java:jboss/datasources/KitchensinkEarQuickstartPGDS" pool-name="kitchensink-quickstartpg" enabled="true" use-java-context="true">
-                    <connection-url>jdbc:postgresql://localhost:5432/postgresdb</connection-url>
+                    <connection-url>jdbc:postgresql://${env.POSTGRES_SERVICE_HOST}:5432/${env.POSTGRES_DB}</connection-url>
                     <driver>postgresql</driver>
                     <security>
-                        <user-name>postgres</user-name>
-                        <password>mypassword123</password>
+                        <user-name>${env.POSTGRES_USER}</user-name>
+                        <password>${env.POSTGRES_PASSWORD}</password>
                     </security>
                 </datasource>
 
@@ -109,10 +109,13 @@ For server 2 deploy the kitchensink-ear (this contains the EJB and backend and w
 4. Start the postgres database on localhost via docker or otherwise
 
 
-The following environment variables need to be set 
+The following environment variables need to be set (use the port the backend is running on.)
 
 export POSTGRES_SERVICE_HOST=localhost
-export BACKEND_PROVIDER_URL=remote+http://localhost:8080
+export BACKEND_PROVIDER_URL=remote+http://localhost:8080   
+export POSTGRES_DB=postgresdb
+export POSTGRES_USER=postgres
+export POSTGRES_PASSWORD=mypassword123
 
 5. Start server 2
 ./standalone.sh
