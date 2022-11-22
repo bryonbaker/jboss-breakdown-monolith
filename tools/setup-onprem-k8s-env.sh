@@ -8,6 +8,6 @@ export ENVIRONMENT_PROMPT="ONPREM"
 export KUBECONFIG=$HOME/.kube/app-modernisation-onprem
 
 printf "Setting up isolated Kubernetes environment in: ${YELLOW}$KUBECONFIG${NC}\n"
-printf "NOTE: The command format to run this script is: \". ./setup-onprem-k8s-env.sh\"\n"
+printf "NOTE: The command format to run this script is: \". $BASH_SOURCE\"\n"
 
 export PS1="\[$(tput setaf 2)\]$ENVIRONMENT_PROMPT: \[$(tput setaf 7)\]\[$(tput setaf 6)\]\W\\$ \[$(tput setaf 7)\]\[$(tput sgr0)\]"
