@@ -87,6 +87,9 @@ public class MemberResourceRESTService {
         jndiProperties.put(Context.INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");
         String backend_provider_url = System.getenv("BACKEND_PROVIDER_URL");
         jndiProperties.put(Context.PROVIDER_URL,backend_provider_url);
+        jndiProperties.put(Context.SECURITY_PRINCIPAL, "jboss");
+        jndiProperties.put(Context.SECURITY_CREDENTIALS, "jboss");
+        jndiProperties.put("jboss.naming.client.connect.options.org.xnio.Options.SASL_DISALLOWED_MECHANISMS", "JBOSS-LOCAL-USER");
         Context context = new InitialContext(jndiProperties);
         return (MemberRegistrationIF) context.lookup("ejb:kitchensink-ear/kitchensink-ear-ejb/MemberRegistration!org.jboss.as.quickstarts.kitchensink_ear.service.MemberRegistrationIF");
     }
@@ -96,6 +99,9 @@ public class MemberResourceRESTService {
         jndiProperties.put(Context.INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");
         String backend_provider_url = System.getenv("BACKEND_PROVIDER_URL");
         jndiProperties.put(Context.PROVIDER_URL,backend_provider_url);
+        jndiProperties.put(Context.SECURITY_PRINCIPAL, "jboss");
+        jndiProperties.put(Context.SECURITY_CREDENTIALS, "jboss");
+        jndiProperties.put("jboss.naming.client.connect.options.org.xnio.Options.SASL_DISALLOWED_MECHANISMS", "JBOSS-LOCAL-USER");
         Context context = new InitialContext(jndiProperties);
         return (MemberRepositoryIF) context.lookup("ejb:kitchensink-ear/kitchensink-ear-ejb/MemberRepository!org.jboss.as.quickstarts.kitchensink_ear.data.MemberRepositoryIF");
     }
