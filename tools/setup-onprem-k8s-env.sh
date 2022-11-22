@@ -1,7 +1,13 @@
 #! /bin/bash
 
-echo "Setting up isolated Kubernetes environment"
-echo "NOTE: The command format to run this script is: \". ./setup-onprem-k8s-env.sh\""
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
 
+#m Edit these two environment variables as you create more environment setup scripts.
+export ENVIRONMENT_PROMPT="ONPREM"
 export KUBECONFIG=$HOME/.kube/app-modernisation-onprem
-export PS1="\[$(tput setaf 2)\]ONPREM: \[$(tput setaf 7)\]\[$(tput setaf 6)\]\W\\$ \[$(tput setaf 7)\]\[$(tput sgr0)\]"
+
+printf "Setting up isolated Kubernetes environment in: ${YELLOW}$KUBECONFIG${NC}\n"
+printf "NOTE: The command format to run this script is: \". ./setup-onprem-k8s-env.sh\"\n"
+
+export PS1="\[$(tput setaf 2)\]$ENVIRONMENT_PROMPT: \[$(tput setaf 7)\]\[$(tput setaf 6)\]\W\\$ \[$(tput setaf 7)\]\[$(tput sgr0)\]"
