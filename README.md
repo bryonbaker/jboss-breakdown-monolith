@@ -8,6 +8,9 @@ The example highlights stages of breaking down the the orginal monolith
 
 The intention is to demonstrate Red Hat Application Interconnect in how a monolith running in a VM can be split in components with those components being able to be redeployed where needed.
 
-![Front screen](frontscreen.png)
+![Front screen](./docs/images/frontscreen.png)
 
-Please refer to the docs/setup.md
+## Instructions
+
+[Setup instructions](./docs/setup.md)  
+[Demo script](./docs/demo-script.md)  
