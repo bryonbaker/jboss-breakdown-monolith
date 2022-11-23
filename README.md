@@ -117,6 +117,7 @@ export POSTGRES_DB=postgresdb
 export POSTGRES_USER=postgres
 export POSTGRES_PASSWORD=mypassword123
 
+docker run -e POSTGRES_SERVICE_HOST=localhost -e BACKEND_PROVIDER_URL=remote+http://localhost:8080 -e POSTGRES_DB=postgresdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8080:8080 localhost/jboss-monolith 
 5. Start server 2
 ./standalone.sh
 
@@ -135,3 +136,22 @@ http://localhost:8180/kitchensink-ear-web
 /subsystem=ee:write-attribute(name=spec-descriptor-property-replacement,value=true)
 
 
+docker run -e POSTGRES_SERVICE_HOST=host.docker.internal -e BACKEND_PROVIDER_URL=remote+http://localhost:8080 -e POSTGRES_DB=postgresdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8080:8080 localhost/jboss-monolith 
+
+docker run --rm -d -e BACKEND_PROVIDER_URL=remote+http://host.docker.internal:8180 -p 8080:8080 --name frontend quay.io/bfarr/jboss-demo-backend
+docker run --rm -d -e POSTGRES_SERVICE_HOST=host.docker.internal -e POSTGRES_DB=postgresdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8180:8080 --name backend quay.io/bfarr/jboss-demo-backend
+
+
+https://stackoverflow.com/questions/42517454/jboss-local-user-javax-security-sasl-saslexception-failed-to-read-server-chall
+https://access.redhat.com/solutions/3209281
+
+555 66  ref 786327928
+To represent the user add the following to the server-identities definition <secret value="amJvc3M=" />
+
+need to add jboss/jboss as an applicatioj user that can call EJB
+
+
+
+docker run --rm -d --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgresdb -p 5432:5432 postgres
+ docker run --rm -d -e POSTGRES_SERVICE_HOST=host.docker.internal -e POSTGRES_DB=postgresdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8080:8080 --name backend quay.io/bfarr/jboss-demo-backend
+ docker run --rm -d -e BACKEND_PROVIDER_URL=remote+http://host.docker.internal:8080 -p 8180:8080 --name frontend quay.io/bfarr/jboss-demo-frontend

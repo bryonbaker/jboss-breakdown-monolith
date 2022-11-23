@@ -11,11 +11,11 @@ USER jboss
 RUN unzip jboss-eap-7.4.0.zip
 RUN chgrp -R 0 /home/jboss/jboss-eap-7.4 && chmod -R g=u /home/jboss/jboss-eap-7.4
 WORKDIR /home/jboss/jboss-eap-7.4
-COPY ./ear/target/kitchensink-ear.ear /home/jboss/jboss-eap-7.4/standalone/deployments/kitchensink-ear.ear
-COPY ./ear/standalone.xml /home/jboss/jboss-eap-7.4/standalone/configuration/standalone.xml
+COPY ./refactored-ear-backend/target/backend.ear /home/jboss/jboss-eap-7.4/standalone/deployments/backend.ear
+COPY ./refactored-ear-backend/standalone.xml /home/jboss/jboss-eap-7.4/standalone/configuration/standalone.xml
 RUN mkdir -p /home/jboss/jboss-eap-7.4/modules/org
-COPY ./ear/module.xml /home/jboss/jboss-eap-7.4/modules/org/postgresql/main/module.xml
-COPY ./ear/postgresql-42.5.0.jar /home/jboss/jboss-eap-7.4/modules/org/postgresql/main/postgresql-42.5.0.jar
+COPY ./refactored-ear-backend/pgdatasource/module.xml /home/jboss/jboss-eap-7.4/modules/org/postgresql/main/module.xml
+COPY ./refactored-ear-backend/pgdatasource/postgresql-42.5.0.jar /home/jboss/jboss-eap-7.4/modules/org/postgresql/main/postgresql-42.5.0.jar
 
 RUN /home/jboss/jboss-eap-7.4/bin/add-user.sh -a -u 'jboss' -p 'jboss'
 

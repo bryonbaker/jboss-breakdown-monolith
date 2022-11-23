@@ -74,7 +74,7 @@
                     <webModule>
                         <groupId>${project.groupId}</groupId>
                         <artifactId>web</artifactId>
-                        <contextRoot>/mbank</contextRoot>
+                        <contextRoot>/rbank</contextRoot>
                     </webModule>
 
                     </modules>

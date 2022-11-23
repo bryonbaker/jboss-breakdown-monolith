@@ -11,7 +11,7 @@ USER jboss
 RUN unzip jboss-eap-7.4.0.zip
 RUN chgrp -R 0 /home/jboss/jboss-eap-7.4 && chmod -R g=u /home/jboss/jboss-eap-7.4
 WORKDIR /home/jboss/jboss-eap-7.4
-COPY ./target/orginal-war-monolith.war /home/jboss/jboss-eap-7.4/standalone/deployments/orginal-war-monolith.war
+COPY ./modular-ear/target/modular-ear.ear /home/jboss/jboss-eap-7.4/standalone/deployments/modular-ear.ear
 
 EXPOSE 8080
 CMD ["/home/jboss/jboss-eap-7.4/bin/standalone.sh","-b","0.0.0.0"]

@@ -18,6 +18,7 @@ package org.jboss.as.quickstarts.kitchensink_ear;
 
 import org.jboss.as.quickstarts.kitchensink_ear.data.MemberRepositoryIF;
 import org.jboss.as.quickstarts.kitchensink_ear.model.Member;
+import org.jboss.as.quickstarts.kitchensink_ear.util.EJBLookupUtil;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -51,18 +52,10 @@ public class MemberListProducer {
     @PostConstruct
     public void retrieveAllMembersOrderedByName() {
         try {
-            members = lookupMemberRepository().findAllOrderedByName();
+            members = EJBLookupUtil.lookupMemberRepository().findAllOrderedByName();
         } catch (NamingException e) {
             e.printStackTrace();
         }
     }
 
-    private MemberRepositoryIF lookupMemberRepository() throws NamingException {
-        final Hashtable jndiProperties = new Hashtable();
-        jndiProperties.put(Context.INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");
-        String backend_provider_url = System.getenv("BACKEND_PROVIDER_URL");
-        jndiProperties.put(Context.PROVIDER_URL,backend_provider_url);
-        Context context = new InitialContext(jndiProperties);
-        return (MemberRepositoryIF) context.lookup("ejb:kitchensink-ear/kitchensink-ear-ejb/MemberRepository!org.jboss.as.quickstarts.kitchensink_ear.data.MemberRepositoryIF");
-    }
 }

@@ -23,9 +23,9 @@
         <version>7.4.0.GA</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>kitchensink</artifactId>
+    <artifactId>orginal-war-monolith</artifactId>
     <packaging>war</packaging>
-    <name>Intermediate EAR</name>
+    <name>Original WAR monolith</name>
     <description>Demonstrate how components are logically split into modules</description>
 
     <licenses>

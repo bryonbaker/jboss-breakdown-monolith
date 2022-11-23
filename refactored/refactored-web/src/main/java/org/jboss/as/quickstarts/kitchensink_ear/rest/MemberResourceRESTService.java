@@ -39,6 +39,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.jboss.as.quickstarts.kitchensink_ear.util.EJBLookupUtil;
 import org.jboss.as.quickstarts.kitchensink_ear.data.MemberRepositoryIF;
 import org.jboss.as.quickstarts.kitchensink_ear.model.Member;
 import org.jboss.as.quickstarts.kitchensink_ear.service.MemberRegistrationIF;
@@ -59,7 +60,7 @@ public class MemberResourceRESTService {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Member> listAllMembers() {
         try {
-            return lookupMemberRepository().findAllOrderedByName();
+            return EJBLookupUtil.lookupMemberRepository().findAllOrderedByName();
         } catch (NamingException e) {
             e.printStackTrace();
         }
@@ -72,7 +73,7 @@ public class MemberResourceRESTService {
     public Member lookupMemberById(@PathParam("id") long id) {
         Member member = null;
         try {
-            member = lookupMemberRepository().findById(id);
+            member = EJBLookupUtil.lookupMemberRepository().findById(id);
         } catch (NamingException e) {
             e.printStackTrace();
         }
@@ -80,30 +81,6 @@ public class MemberResourceRESTService {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
         return member;
-    }
-
-    private MemberRegistrationIF lookupMemberRegistration() throws NamingException {
-        final Hashtable jndiProperties = new Hashtable();
-        jndiProperties.put(Context.INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");
-        String backend_provider_url = System.getenv("BACKEND_PROVIDER_URL");
-        jndiProperties.put(Context.PROVIDER_URL,backend_provider_url);
-        jndiProperties.put(Context.SECURITY_PRINCIPAL, "jboss");
-        jndiProperties.put(Context.SECURITY_CREDENTIALS, "jboss");
-        jndiProperties.put("jboss.naming.client.connect.options.org.xnio.Options.SASL_DISALLOWED_MECHANISMS", "JBOSS-LOCAL-USER");
-        Context context = new InitialContext(jndiProperties);
-        return (MemberRegistrationIF) context.lookup("ejb:kitchensink-ear/kitchensink-ear-ejb/MemberRegistration!org.jboss.as.quickstarts.kitchensink_ear.service.MemberRegistrationIF");
-    }
-
-    private MemberRepositoryIF lookupMemberRepository() throws NamingException {
-        final Hashtable jndiProperties = new Hashtable();
-        jndiProperties.put(Context.INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");
-        String backend_provider_url = System.getenv("BACKEND_PROVIDER_URL");
-        jndiProperties.put(Context.PROVIDER_URL,backend_provider_url);
-        jndiProperties.put(Context.SECURITY_PRINCIPAL, "jboss");
-        jndiProperties.put(Context.SECURITY_CREDENTIALS, "jboss");
-        jndiProperties.put("jboss.naming.client.connect.options.org.xnio.Options.SASL_DISALLOWED_MECHANISMS", "JBOSS-LOCAL-USER");
-        Context context = new InitialContext(jndiProperties);
-        return (MemberRepositoryIF) context.lookup("ejb:kitchensink-ear/kitchensink-ear-ejb/MemberRepository!org.jboss.as.quickstarts.kitchensink_ear.data.MemberRepositoryIF");
     }
 
     /**
@@ -121,7 +98,7 @@ public class MemberResourceRESTService {
             // Validates member using bean validation
             validateMember(member);
 
-            lookupMemberRegistration().register(member);
+            EJBLookupUtil.lookupMemberRegistration().register(member);
 
             // Create an "ok" response
             builder = Response.ok();
@@ -201,7 +178,7 @@ public class MemberResourceRESTService {
         Member member = null;
         try {
             try {
-                member = lookupMemberRepository().findByEmail(email);
+                member = EJBLookupUtil.lookupMemberRepository().findByEmail(email);
             } catch (NamingException e) {
                 e.printStackTrace();
             }

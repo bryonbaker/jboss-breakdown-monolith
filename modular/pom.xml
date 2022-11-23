@@ -22,9 +22,9 @@
         <artifactId>jboss-breakdown-monolith</artifactId>
         <version>7.4.0.GA</version>
     </parent>
-    <artifactId>intermediate</artifactId>
+    <artifactId>modular</artifactId>
     <packaging>pom</packaging>
-    <name>Intermediate EAR</name>
+    <name>Modular EAR</name>
     <description>Demonstrate how components are logically split into modules</description>
 
     <licenses>
