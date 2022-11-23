@@ -1,1 +1,4 @@
 *.iml
+.idea/
+/original-ear/target/
+*.zip

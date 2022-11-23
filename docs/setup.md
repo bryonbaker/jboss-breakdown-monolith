@@ -1,26 +1,19 @@
 # Setup Instructions
-This project has started with the JBoss 7.4 kitchensink quickstart and sought to split the web and ejb components. 
 
-The are independently deployable EAR files and the web component uses http remoting to lookup EJBs on localhost:8080 as
-a default.
+##To demonstrate it running it on a single EAP server in a VM the following steps are required.
 
-The intention is to demonstrate Red Hat Application Interconnect in how a monolith running in a VM can be split in components with those components being able to be redeployed where needed.
-
-There is work left to do in paramertising values and containerising for OpenShift.
-
-![Front screen](./images/frontscreen.png)
-
-
-To demonstrate it running it on EAP servers in a VM the following steps are required.
-
-1. Download EAP 7.4 Zip file and unzip twice into different directories. The ZIP file is located at the following URL: https://developers.redhat.com/products/eap/download
+1. Download EAP 7.4 Zip file. The ZIP file is located at the following URL: https://developers.redhat.com/products/eap/download
 Scroll down to the 7.4.0 release and click **Download** on the Zip file. 
 
-You should now have 2 places where this is unzipped like so
-/jboss-eap-7.4-2/
+You should now have a place where this is unzipped like so
 /jboss-eap-7.4/
 
-2. For Server 2 (Backend) - JBoss server we will need to setup some configuration 
+2. Build the project
+use Java 8 and install Maven
+```mvn clean install```  
+
+
+3. For the Server to run the refactored Backend - JBoss server we will need to setup some configuration 
 
 a. Postgres Driver
 In the jboss-eap-7.4/bin directory  
@@ -46,14 +39,12 @@ Now shutdown the server and exit from the CLI
 ```shutdown```  
 ```exit```
 
-b. For Server 2 - Postgres Datasource
-The following needs to be added to standalone.xml after the datasources 
+4. The standalone.xml now needs to adjust, the following standalone.xml can be used
 
-```xml
-<subsystem xmlns="urn:jboss:domain:datasources:6.0">
-<datasources>
-```
+```./refactored-ear-backend/standalone.xml```
+ and copied to the directory /jboss-eap-7.4/standalone/configuration/standalone.xml
 
+The new standalone file has the following snippets added
 
 ```xml
 <datasource jndi-name="java:jboss/datasources/KitchensinkEarQuickstartPGDS" pool-name="kitchensink-quickstartpg" enabled="true" use-java-context="true">
@@ -67,69 +58,137 @@ The following needs to be added to standalone.xml after the datasources
 
 ```
 
-Locate the ```<drivers>``` tag and insert the following driver under the ```<driver name="h2" module="com.h2database.h2">``` driver.
 ```xml
     <driver name="postgresql" module="org.postgresql">
         <xa-datasource-class>org.postgresql.xa.PGXADataSource</xa-datasource-class>
     </driver>
 ```
 
-Update the file: ```./standalone/configuration/standalone.xml```  
-Paste the XML in the section
+4. Run a containerised postgres on the VM matching the values in the datasource like so
+```docker run --rm=true --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgresdb -p 5432:5432 postgres```
 
-Run a containerised postgres on the VM matching the values in the datasource like so
-docker run --rm=true --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgresdb -p 5432:5432 postgres
-
-
-The following environment variables need to be set (use the port the backend is running on.)
-
+5. You can now verify the datasource works by setting the environment variables and starting up JBoss in the foreground like so and see if any errors
 export POSTGRES_SERVICE_HOST=localhost
 export BACKEND_PROVIDER_URL=remote+http://localhost:8080   
 export POSTGRES_DB=postgresdb
 export POSTGRES_USER=postgres
 export POSTGRES_PASSWORD=mypassword123
-
-You can now verify it works by starting up JBoss in the foreground like so and see if any errors
 /bin/standalone.sh 
 
 Stop JBOSS
 
-## Building the Application
-(If you don't want to build the app then move to next section)  
-3. Now you can deploy the applications, for convenience the ear files have been checked into project, but otherwise to build it  
-```
-use Java 8 and install Maven
-mvn clean install
-```
-## Copy the EAR files
-There are two EAR files.  
-1. Copy ```ear/target/kitchensink-ear.ear``` to the frtontend under the frontend under ```./standalone/deployments``` directory
+6. Add a user that the frontend is using to connect to the backend
+/jboss-eap-7.4/bin/add-user.sh -a -u 'jboss' -p 'jboss'
 
-2. Copy ```ear-remote/target/kitchensink-ear-remote.ear``` to the backend under ```./standalone/deployments``` directory  
-
-Copy the ear files to the standalone/deployments directory
-
-For server 1 deploy the kitchensink-ear-remote (this contains the frontend)
-For server 2 deploy the kitchensink-ear (this contains the EJB and backend and will need the database/datasource setup)
-
-4. Start the postgres database on localhost via docker or otherwise
-
-5. Start server 2
-./standalone.sh
+7. Copy the artifacts into the standalone/deployments directory
 
 
-6. Start server 1 with an offset  
+All dependencies have separated web contexts and can be run in parallel. The original and modular use an in memeory H2 database and not postgres.
+
+```cp ./modular/modular-ear/target/modular-ear.ear ./jboss-eap-7.4/standalone/deployments```  (use http://localhost:8080/obank )
+```cp ./original-war-monolith/target/orginal-war-monolith.war ./jboss-eap-7.4/standalone/deployments```  (use http://localhost:8080/ibank )
+```cp ./refactored/refactored-ear-backend/target/backend.ear ./jboss-eap-7.4/standalone/deployments```  (use http://localhost:8080/rbank )
+```cp ./refactored/refactored-ear-frontend/target/frontend.ear ./jboss-eap-7.4/standalone/deployments``` 
+
+8. Start JBoss
+
+You can now verify it works by starting up JBoss and check the different applications
+/bin/standalone.sh 
+
+
+##To demonstrate it running it on mulitple EAP servers in a single VM the following steps are required.
+
+1. Install a secondary JBOSS by unzipping into a different directory
+
+2. Copy the frontend into the deployment directory
+
+```cp ./refactored/refactored-ear-frontend/target/frontend.ear ./jboss-eap-7.4/standalone/deployments``` 
+3. Set the following environment variable and direct it to the machine name where the backend is running
+export BACKEND_PROVIDER_URL=remote+http://localhost:8080
+
+4. Start the server with an offset if on the same machine 
 ```./standalone.sh -Djboss.socket.binding.port-offset=100 &```
 
-7. Navigate to the frontend 
-
-http://localhost:8180/kitchensink-ear-web
-
+5. Launch the frontend on the new EAP server
+http://localhost:8180/rbank
 
 
-(To remember to adjust for JBOSS for environment variables)
-/subsystem=ee:write-attribute(name=jboss-descriptor-property-replacement,value=true)
-/subsystem=ee:write-attribute(name=spec-descriptor-property-replacement,value=true)
+##To demonstrate it running it in local Containers
 
-   
-   
+Container or Dockerfiles have been provided and images are pre built and accessible
+
+1. To rebuild images locally
+Ensure you have built all the artifacts with an mvn clean install
+
+2. Run a containerised postgres on the VM matching the values in the datasource like so
+```docker run --rm=true --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgresdb -p 5432:5432 postgres```
+
+3. Build the images
+
+The jboss-eap-7.4.0.zip file is expected to be in the current directory 
+cd refactored/
+docker build -t localhost/jboss-demo-backend --file Dockerfile-backend . 
+docker build -t localhost/jboss-demo-frontend --file Dockerfile-frontend .
+
+cd original-war-monolith/
+docker build -t localhost/jboss-demo-original --file Dockerfile .
+
+cd modular
+docker build -t localhost/jboss-demo-modular --file Dockerfile .
+
+4. To run the images for the original  
+```docker run --rm -d -p 8100:8080 --name frontend localhost/jboss-demo-original```
+
+Navigate to
+http://localhost:8100/obank
+
+5. To run the images for the modular 
+```docker run --rm -d -p 8090:8080 --name frontend localhost/jboss-demo-modular```
+
+Navigate to
+http://localhost:8090/ibank
+
+6. To run the images for the refactored
+```docker run --rm=true --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgresdb -p 5432:5432 postgres```
+```docker run --rm -d -e BACKEND_PROVIDER_URL=remote+http://host.docker.internal:8180 -p 8080:8080 --name frontend localhost/jboss-demo-backend```
+```docker run --rm -d -e POSTGRES_SERVICE_HOST=host.docker.internal -e POSTGRES_DB=postgresdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8180:8080 --name backend localhost/jboss-demo-backend```
+Navigate to
+http://localhost:8080/rbank
+
+##To demonstrate it running it in pre built Containers
+
+1. To run the images for the original  
+```docker run --rm -d -p 8100:8080 --name original quay.io/bfarr/jboss-demo-original```
+Navigate to
+http://localhost:8100/obank
+
+2. To run the images for the modular 
+```docker run --rm -d -p 8090:8080 --name modular quay.io/bfarr/jboss-demo-modular```
+
+Navigate to
+http://localhost:8090/ibank
+
+3. To run the images for the refactored
+```docker run --rm=true --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgresdb -p 5432:5432 postgres```
+```docker run --rm -d -e BACKEND_PROVIDER_URL=remote+http://host.docker.internal:8180 -p 8080:8080 --name frontend quay.io/bfarr/jboss-demo-backend```
+```docker run --rm -d -e POSTGRES_SERVICE_HOST=host.docker.internal -e POSTGRES_DB=postgresdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8180:8080 --name backend quay.io/bfarr/jboss-demo-backend```
+
+Navigate to
+http://localhost:8080/rbank
+
+
+
+##To demonstrate it running it with Red Hat Application Interconnect and OpenShift
+
+
+
+docker run -e POSTGRES_SERVICE_HOST=localhost -e BACKEND_PROVIDER_URL=remote+http://localhost:8080 -e POSTGRES_DB=postgresdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8080:8080 localhost/jboss-monolith 
+
+
+docker run -e POSTGRES_SERVICE_HOST=host.docker.internal -e BACKEND_PROVIDER_URL=remote+http://localhost:8080 -e POSTGRES_DB=postgresdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8080:8080 localhost/jboss-monolith 
+
+
+
+docker run --rm -d --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgresdb -p 5432:5432 postgres
+ docker run --rm -d -e POSTGRES_SERVICE_HOST=host.docker.internal -e POSTGRES_DB=postgresdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8080:8080 --name backend quay.io/bfarr/jboss-demo-backend
+ docker run --rm -d -e BACKEND_PROVIDER_URL=remote+http://host.docker.internal:8080 -p 8180:8080 --name frontend quay.io/bfarr/jboss-demo-frontend
