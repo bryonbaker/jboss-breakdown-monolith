@@ -20,43 +20,27 @@ body {
   padding: 0;
   background-color: #F1F1F1;
   font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-  font-size: 0.8em;
+  font-size: 1.0em;
   color:#363636;
 }
 
 #container {
   margin: 0 auto;
   padding: 0 20px 10px 20px;
-  border-top: 5px solid #000000;
-  border-left: 5px solid #8c8f91;
-  border-right: 5px solid #8c8f91;
-  border-bottom: 25px solid #8c8f91;
-  width: 865px; /* subtract 40px from banner width for padding */
   background: #FFFFFF;
   background-image: url(#{request.contextPath}/resources/gfx/headerbkg.png);
   background-repeat: repeat-x;
   padding-top: 30px;
-  box-shadow: 3px 3px 15px #d5d5d5;
 }
-#content {
+#menu {
   float: left;
-  width: 500px;
   margin: 20px;
 }
-#aside {
-  font-size: 0.9em;
-  width: 275px;
-  float: left;
-  margin: 20px 0px;
-  border: 1px solid #D5D5D5;
-  background: #F1F1F1;
-  background-image: url(#{request.contextPath}/resources/gfx/asidebkg.png);
-  background-repeat: repeat-x;
-  padding: 20px;
-}
 
-#aside ul {
-  padding-left: 30px;
+#content {
+  float: left;
+  margin: 20px;
+
 }
 .dualbrand {
   float: right;
@@ -100,24 +84,20 @@ span.invalid {
   padding-left: 3px;
   color: red;
 }
-form {
-  padding: 1em;
-  font: 80%/1 sans-serif;
-  width: 375px;
-  border: 1px solid #D5D5D5;
-}
+
 label {
   float: left;
-  width: 15%;
-  margin-left: 20px;
   margin-right: 0.5em;
   padding-top: 0.2em;
   text-align: right;
   font-weight: bold;
   color:#363636;
+  font-size: 1.25em;
+  margin-bottom: 10px;
 }
 input {
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  font-size: 1.0em;
 }
 .register {
   float: left;
@@ -132,7 +112,6 @@ input {
 .simpletablestyle {
   background-color:#E6E7E8;
   clear:both;
-  width: 550px;
 }
 
 .simpletablestyle img {
@@ -142,22 +121,22 @@ input {
 .simpletablestyle td {
   height:2em;
   padding-left: 6px;
-  font-size:11px;
+  font-size:1.0em;
   padding:5px 5px;
 }
 
 .simpletablestyle th {
 	background: url(#{request.contextPath}/resources/gfx/bkg-blkheader.png) black repeat-x top left;
-  font-size:12px;
+  font-size:1em;
   font-weight:normal;
-  padding:0 10px 0 5px;
+  padding:0 20px 0 5px;
   border-bottom:#999999 dotted 1px;
 }
 
 .simpletablestyle thead {
   background: url(#{request.contextPath}/resources/gfx/bkg-blkheader.png) black repeat-x top left;
   height:31px;
-  font-size:10px;
+  font-size:1em;
   font-weight:bold;
   color:#FFFFFF;
   text-align:left;
@@ -169,7 +148,7 @@ input {
 
 .simpletablestype tfoot {
 	height: 20px;
-  font-size: 10px;
+  font-size: 14px;
   font-weight: bold;
   background-color: #EAECEE;
   text-align: center;
@@ -182,7 +161,7 @@ input {
 
 .simpletablestyle .subheader {
   background-color: #e6e7e8;
-  font-size:10px;
+  font-size:14px;
   font-weight:bold;
   color:#000000;
   text-align:left;
@@ -199,4 +178,23 @@ input {
 .simpletablestyle td a:hover {
   color:#3883ce;
   text-decoration:none; 
+}
+
+.button {
+  background-color: #be9e44;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 24px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+tab {
+    display: inline-block;
+    margin-left: 40px;
 }

@@ -20,7 +20,7 @@
 
     <parent>
         <groupId>org.jboss.eap.quickstarts</groupId>
-        <artifactId>intermediate</artifactId>
+        <artifactId>modular</artifactId>
         <version>7.4.0.GA</version>
     </parent>
     <artifactId>modular-ear</artifactId>
@@ -38,14 +38,14 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>kitchensink-ear-ejb</artifactId>
+            <artifactId>modular-ejb</artifactId>
             <type>ejb</type>
         </dependency>
 
         <!-- Depend on the EJB module and WAR so that we can package them -->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>kitchensink-ear-web</artifactId>
+            <artifactId>modular-web</artifactId>
             <type>war</type>
         </dependency>
     </dependencies>
@@ -70,7 +70,7 @@
                         <!---->
                     <webModule>
                         <groupId>${project.groupId}</groupId>
-                        <artifactId>kitchensink-ear-web</artifactId>
+                        <artifactId>modular-web</artifactId>
                         <contextRoot>/ibank</contextRoot>
                     </webModule>
 

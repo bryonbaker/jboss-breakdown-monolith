@@ -36,8 +36,8 @@
     </licenses>
 
     <modules>
-        <module>ejb</module>
-        <module>web</module>
+        <module>modular-ejb</module>
+        <module>modular-web</module>
         <module>modular-ear</module>
     </modules>
 
@@ -48,7 +48,7 @@
                 to repeat ourselves in every module -->
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>kitchensink-ear-ejb</artifactId>
+                <artifactId>modular-ejb</artifactId>
                 <version>7.4.0.GA</version>
                 <type>ejb</type>
             </dependency>
@@ -57,7 +57,7 @@
                 ourselves in every module -->
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>kitchensink-ear-web</artifactId>
+                <artifactId>modular-web</artifactId>
                 <version>7.4.0.GA</version>
                 <type>war</type>
                 <scope>compile</scope>

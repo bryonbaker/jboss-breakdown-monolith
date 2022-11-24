@@ -20,10 +20,10 @@
 
     <parent>
         <groupId>org.jboss.eap.quickstarts</groupId>
-        <artifactId>intermediate</artifactId>
+        <artifactId>modular</artifactId>
         <version>7.4.0.GA</version>
     </parent>
-    <artifactId>kitchensink-ear-ejb</artifactId>
+    <artifactId>modular-ejb</artifactId>
     <packaging>ejb</packaging>
     <version>7.4.0.GA</version>
     <name>Intermediate EJB</name>
