@@ -1,6 +1,8 @@
-# Setup Instructions
+# Environment Setup Instructions
 
-##To demonstrate it running it on a single EAP server in a VM the following steps are required.
+## Running on EAP
+
+To demonstrate it running it on a single EAP server in a VM the following steps are required.
 
 1. Download EAP 7.4 Zip file. The ZIP file is located at the following URL: https://developers.redhat.com/products/eap/download
 Scroll down to the 7.4.0 release and click **Download** on the Zip file. 
@@ -113,14 +115,31 @@ export BACKEND_PROVIDER_URL=remote+http://localhost:8080
 http://localhost:8180/rbank
 
 
-##To demonstrate it running it in local Containers
+## Running the Application in Containers
 
-Container or Dockerfiles have been provided and images are pre built and accessible
+There are three containers that have been provided:
+1. Postgres database
+2. Application backend
+3. Application frontend.
 
-1. To rebuild images locally
-Ensure you have built all the artifacts with an mvn clean install
+To run all the containers enter the following command in a Bash shell:
+```
+$ ./tools/start-all.sh 
 
-2. Run a containerised postgres on the VM matching the values in the datasource like so
+Checking for container runtime...
+Podman is installed
+0a57b4233360797cc75956ad7959bfa2021ab97d3c8836238bcab5401ca7d374
+794c9c2380db416d5968efab520d6836101b64ff493b9ba8df55a76f221e304c
+38a53662803b497bddc63b03fca87e3b496e86357303e5d8bc4aa75b22cbe395
+```
+
+Note: The script detects both Docker and Podman and will launch the container with whicheverr is installed.
+
+### Rebuilding the Container Images
+Container or Dockerfiles have been provided and images are pre built and accessible. To rebuild images locally:  
+1. Ensure you have built all the artifacts with an mvn clean install
+
+2. Run a containerised postgres on the VM matching the values in the datasource like so  
 ```docker run --rm=true --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgresdb -p 5432:5432 postgres```
 
 3. Build the images
