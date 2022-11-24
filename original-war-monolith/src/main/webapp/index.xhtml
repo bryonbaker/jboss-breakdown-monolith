@@ -14,82 +14,121 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+    #CBB26A
+    #000000
+    #d8c690
+    #be9e44
+    #1a1a1a
+    #e5d9b6
+
 -->
+
+
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:h="http://java.sun.com/jsf/html"
-    template="/WEB-INF/templates/default.xhtml">
-    <ui:define name="content">
-        <h1>Welcome to JBoss!</h1>
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   template="/WEB-INF/templates/default.xhtml">
 
-        <div>
-            <p>You have successfully deployed a Jakarta EE Enterprise
-                Application.</p>
-        </div>
+   <ui:define name="content">
+      <div>
+         <span>
+         <h:graphicImage url="/resources/images/logo.png" width="100" height="100" />
+            <tab/>
+         <a style="color:#1a1a1a" href="#">Banking</a><tab/>
+             <a style="color:#e5d9b6" href="#">Home loans</a><tab/>
+             <a style="color:#1a1a1a" href="#">Insurance</a><tab/>
+             <a style="color:#1a1a1a" href="#">Investing</a><tab/>
+            <a style="color:#1a1a1a" href="#">Business</a>
+         </span>
+      </div>
 
-        <h:form id="reg">
-            <h2>Member Registration</h2>
-            <p>Enforces annotation-based constraints defined on the
-                model class.</p>
-            <h:panelGrid columns="3" columnClasses="titleCell">
-                <h:outputLabel for="name" value="Name:" />
-                <h:inputText id="name" value="#{newMember.name}" />
-                <h:message for="name" errorClass="invalid" />
+      <div>
+         <h1>Talk to a Home Lending Specialist</h1>
+         <h:graphicImage url="/resources/images/background.png" width="660" height="306"/>
+         <p>Appointments for new home loans or refinancing. Booking an appointment only takes a few minutes.<br/>
+         You can talk with a Home Lending Specialist: in branch, at your home or work or over the phone.</p>
+      </div>
 
-                <h:outputLabel for="email" value="Email:" />
-                <h:inputText id="email" value="#{newMember.email}" />
-                <h:message for="email" errorClass="invalid" />
+      <script type="text/javascript">
+         var $test;
+         function queue(){
+             if ((document.getElementById("queue").style.visibility = "hidden") | ($test!="visible"))
+              {document.getElementById("queue").style.visibility = "visible";
+              $test="visible"
+              }
+              else
+              {document.getElementById("queue").style.visibility = "hidden";
+              $test="hidden"}
+              return false;
+         }
+      </script>
+      <h:form id="reg">
+         <p>To get started enter your contact details</p>
+         <h:panelGrid columns="3" columnClasses="titleCell">
+            <h:outputLabel for="name" value="Name:"/>
+            <h:inputText id="name" value="#{newMember.name}" />
+            <h:message for="name" errorClass="invalid"/>
 
-                <h:outputLabel for="phoneNumber" value="Phone #:" />
-                <h:inputText id="phoneNumber"
-                    value="#{newMember.phoneNumber}" />
-                <h:message for="phoneNumber" errorClass="invalid" />
-            </h:panelGrid>
+            <h:outputLabel for="email" value="Email:"/>
+            <h:inputText id="email" value="#{newMember.email}"/>
+            <h:message for="email" errorClass="invalid"/>
 
-            <p>
-                <h:panelGrid columns="2">
-                    <h:commandButton id="register"
-                        action="#{memberController.register}"
-                        value="Register" styleClass="register" />
-                    <h:messages styleClass="messages"
-                        errorClass="invalid" infoClass="valid"
-                        warnClass="warning" globalOnly="true" />
-                </h:panelGrid>
-            </p>
-        </h:form>
-        <h2>Members</h2>
-        <h:panelGroup rendered="#{empty members}">
-            <em>No registered members.</em>
-        </h:panelGroup>
-        <h:dataTable var="_member" value="#{members}"
-            rendered="#{not empty members}"
-            styleClass="simpletablestyle">
-            <h:column>
-                <f:facet name="header">Id</f:facet>
+            <h:outputLabel for="phoneNumber" value="Mobile number:"/>
+            <h:inputText id="phoneNumber" value="#{newMember.phoneNumber}"/>
+            <h:message for="phoneNumber" errorClass="invalid"/>
+         </h:panelGrid>
+
+         <p>
+            <h:commandButton id="register" action="#{memberController.register}" value="Let's Go" styleClass="button"/>
+            <tab/>
+            <h:button id="viewqueue" value="View Queue" styleClass="button" onclick="return queue()" />
+         </p>
+         <p>
+            <h:messages styleClass="messages" layout="table" errorClass="invalid" infoClass="valid" warnClass="warning"
+                        globalOnly="true"/>
+         </p>
+      </h:form>
+
+      <div id="queue" style="visibility: hidden;">
+      <h2>Queue</h2>
+      <h:panelGroup rendered="#{empty members}">
+         <em>No registered appointments</em>
+      </h:panelGroup>
+      <h:dataTable var="_member" value="#{members}" rendered="#{not empty members}" styleClass="simpletablestyle">
+         <!--
+         <h:column>
+            <f:facet name="header">Id</f:facet>
                 #{_member.id}
             </h:column>
-            <h:column>
-                <f:facet name="header">Name</f:facet>
+            -->
+         <h:column>
+            <f:facet name="header">Name</f:facet>
                 #{_member.name}
             </h:column>
-            <h:column>
-                <f:facet name="header">Email</f:facet>
+         <h:column>
+            <f:facet name="header">Email</f:facet>
                 #{_member.email}
             </h:column>
-            <h:column>
-                <f:facet name="header">Phone #</f:facet>
+         <h:column>
+            <f:facet name="header">Mobile number</f:facet>
                 #{_member.phoneNumber}
             </h:column>
-            <h:column>
-                <f:facet name="header">REST URL</f:facet>
-                <a
-                    href="#{request.contextPath}/rest/members/#{_member.id}">/rest/members/#{_member.id}</a>
-            </h:column>
-            <f:facet name="footer">
-            REST URL for all members: <a
-                    href="#{request.contextPath}/rest/members">/rest/members</a>
-            </f:facet>
-        </h:dataTable>
-    </ui:define>
+         <!--
+         <h:column>
+            <f:facet name="header">REST URL</f:facet>
+            <a href="#{request.contextPath}/rest/members/#{_member.id}">/rest/members/#{_member.id}</a>
+         </h:column>
+
+         <f:facet name="footer">
+            REST API: <a href="#{request.contextPath}/rest/members">/rest/members</a>
+         </f:facet>
+         -->
+         <f:facet name="footer">
+            <i>Estimated waiting time .... 20 mins</i>
+         </f:facet>
+      </h:dataTable>
+
+      </div>
+   </ui:define>
 </ui:composition>
