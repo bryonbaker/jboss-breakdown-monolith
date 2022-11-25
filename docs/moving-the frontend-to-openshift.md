@@ -233,6 +233,37 @@ This section will create a Gateway on the same machine that the Backend is runni
    ```
    Observe the ```annotations``` and the ```selector``` attributes are pointing the service to the RHAI router. This is what enables RHAI to intercept calls to the service and send them out over the router.
 
+4. View the RHAI Network Status  
+   ```skupper network status```  
+
+   ```
+   $ skupper network status
+    Sites:
+    ╰─ [local] 6d18150 - local 
+    mode: interior
+    name: local
+    namespace: app-modernisation
+    version: 1.2.0
+    ╰─ Services:
+        ╰─ name: backend
+            address: backend: 8080
+            protocol: tcp
+   ```
+
+   Thwe system displays the services that have been published in OpenShift to the RHAI mesh network, and the port they are accessed via.
+
+5. View the RHAI Gateway status
+   ```skupper gateway status```
+
+   ```
+   $ skupper gateway status
+    Gateway Definition:
+    ╰─ rh-brbaker-bryon type:podman version:2.2.0
+    ╰─ Bindings:
+        ╰─ backend:8080 tcp backend:8080 127.0.0.1 8080
+   ```
+   The system shows how the backend service is bound to an ip address and port on the virtual machine.
+
 ### Deploy the Frontend to OpenShift
 1. Deploy the Frontend to OpenShift on premises
    ```oc apply -f ./yaml/frontend.yaml```  
