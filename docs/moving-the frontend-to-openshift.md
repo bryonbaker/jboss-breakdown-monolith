@@ -257,9 +257,10 @@ This section will create a Gateway on the same machine that the Backend is runni
 
    ```
    $ skupper gateway status
-    Gateway Definition:
-    ╰─ rh-brbaker-bryon type:podman version:2.2.0
-    ╰─ Bindings:
+     Gateway Definition:
+     ╰─ rh-brbaker-bryon type:podman  
+     version:2.2.0
+     ╰─ Bindings:
         ╰─ backend:8080 tcp backend:8080 127.0.0.1 8080
    ```
    The system shows how the backend service is bound to an ip address and port on the virtual machine.
