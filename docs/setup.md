@@ -177,7 +177,7 @@ Navigate to http://localhost:8090/ibank
 
 Navigate to http://localhost:8080/rbank
 
-##To demonstrate it running it in pre built Containers
+### To demonstrate it running it in pre built Containers
 
 1. To run the images for the original  
 ```docker run --rm -d -p 8100:8080 --name original quay.io/bfarr/jboss-demo-original```
