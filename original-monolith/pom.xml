@@ -9,14 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>refactored</artifactId>
+    <artifactId>original-monolith</artifactId>
     <packaging>pom</packaging>
 
     <modules>
-        <module>refactored-ejb</module>
-        <module>refactored-web</module>
-        <module>refactored-ear-backend</module>
-        <module>refactored-ear-frontend</module>
+        <module>original-web</module>
+        <module>original-ear</module>
     </modules>
 
 </project>

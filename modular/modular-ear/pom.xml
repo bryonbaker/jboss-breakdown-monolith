@@ -19,7 +19,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.jboss.eap.quickstarts</groupId>
+        <groupId>org.jboss.rwx.bank</groupId>
         <artifactId>modular</artifactId>
         <version>7.4.0.GA</version>
     </parent>

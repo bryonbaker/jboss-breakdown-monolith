@@ -19,7 +19,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.jboss.eap.quickstarts</groupId>
+        <groupId>org.jboss.rwx.bank</groupId>
         <artifactId>modular</artifactId>
         <version>7.4.0.GA</version>
     </parent>
@@ -69,7 +69,7 @@
         <!-- Dependency on the EJB module so we can use it's services if needed -->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>kitchensink-ear-ejb</artifactId>
+            <artifactId>modular-ejb</artifactId>
             <type>ejb</type>
             <scope>provided</scope>
         </dependency>

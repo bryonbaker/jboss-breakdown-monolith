@@ -20,14 +20,14 @@
 
     <parent>
         <groupId>org.jboss.rwx.bank</groupId>
-        <artifactId>refactored</artifactId>
+        <artifactId>original-monolith</artifactId>
         <version>7.4.0.GA</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>frontend</artifactId>
+    <artifactId>original-ear</artifactId>
     <packaging>ear</packaging>
-    <name>Refactored Frontend EAR</name>
-    <description>Demonstrates how to breakdown the monolith to seperate deployable components</description>
-
+    <name>Original EAR</name>
+    <description>Original packaginig</description>
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
@@ -39,22 +39,14 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>web</artifactId>
+            <artifactId>original-web</artifactId>
             <version>7.4.0.GA</version>
             <type>war</type>
         </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>ejb</artifactId>
-            <version>7.4.0.GA</version>
-            <type>ejb-client</type>
-        </dependency>
-
     </dependencies>
 
     <build>
-        <finalName>frontend</finalName>
+        <finalName>obank</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -70,11 +62,11 @@
                         <!-- Default context root of the web app is /kitchensink-ear-web.
                         If a custom context root is needed, uncomment the following snippet to
                         register our War as a web module and set the contextRoot property -->
-                        <!-- -->
+                        <!---->
                     <webModule>
                         <groupId>${project.groupId}</groupId>
-                        <artifactId>web</artifactId>
-                        <contextRoot>/rbank</contextRoot>
+                        <artifactId>original-web</artifactId>
+                        <contextRoot>/obank</contextRoot>
                     </webModule>
 
                     </modules>

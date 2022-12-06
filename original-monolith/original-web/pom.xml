@@ -17,16 +17,16 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>org.jboss.rwx.bank</groupId>
-        <artifactId>refactored</artifactId>
+        <artifactId>original-monolith</artifactId>
         <version>7.4.0.GA</version>
     </parent>
-    <artifactId>ejb</artifactId>
-    <packaging>ejb</packaging>
-    <name>Refactored EJB JAR</name>
-    <description>Demonstrates how to breakdown the monolith to separate deployable components</description>
+    <artifactId>original-web</artifactId>
+    <packaging>war</packaging>
+    <name>Original WAR monolith</name>
+    <description>The original code structure</description>
+
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
@@ -37,18 +37,38 @@
 
     <dependencies>
 
-        <!-- Import the CDI API, we use provided scope as the API is included in JBoss EAP -->
+        <!-- First declare the APIs we depend on and need for compilation. All
+            of them are provided by JBoss EAP -->
+
+        <!-- Import the CDI API, we use provided scope as the API is included in
+            JBoss EAP -->
         <dependency>
             <groupId>jakarta.enterprise</groupId>
             <artifactId>jakarta.enterprise.cdi-api</artifactId>
             <scope>provided</scope>
         </dependency>
 
-        <!-- Test scope dependencies -->
+        <!-- Needed for running tests (you may also use TestNG) -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <!-- Now we declare any tools needed -->
+
+        <!-- Annotation processor to generate the JPA metamodel classes for
+            typesafe criteria queries -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-jpamodelgen</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Jakarta Activation needed for JPA model generation -->
+        <dependency>
+            <groupId>com.sun.activation</groupId>
+            <artifactId>jakarta.activation</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Bean Validation Implementation 
@@ -66,7 +86,16 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Import the JPA API, we use provided scope as the API is included in JBoss EAP -->
+        <!-- Annotation processor that raising compilation errors whenever constraint
+            annotations are incorrectly used. -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator-annotation-processor</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Import the JPA API, we use provided scope as the API is included in
+            JBoss EAP -->
         <dependency>
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
@@ -74,8 +103,8 @@
         </dependency>
 
         <!-- Optional, but highly recommended -->
-        <!-- Arquillian allows you to test enterprise code such as EJBs and
-            Transactional(JTA) JPA from JUnit/TestNG -->
+        <!-- Arquillian allows you to test enterprise code such as EJBs and Transactional(JTA)
+            JPA from JUnit/TestNG -->
         <dependency>
             <groupId>org.jboss.arquillian.junit</groupId>
             <artifactId>arquillian-junit-container</artifactId>
@@ -88,47 +117,48 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Import the Common Annotations API (JSR-250), we use provided scope
+            as the API is included in JBoss EAP -->
+        <dependency>
+            <groupId>org.jboss.spec.javax.annotation</groupId>
+            <artifactId>jboss-annotations-api_1.3_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
-        <!-- Declare the APIs we depend on and need for compilation. All of
-            them are provided by JBoss EAP -->
-
-        <!-- Import the EJB API, we use provided scope as the API is included in JBoss EAP -->
+        <!-- Import the EJB API, we use provided scope as the API is included in
+            JBoss EAP -->
         <dependency>
             <groupId>org.jboss.spec.javax.ejb</groupId>
             <artifactId>jboss-ejb-api_3.2_spec</artifactId>
             <scope>provided</scope>
         </dependency>
+
+        <!-- Import the JSF API, we use provided scope as the API is included in
+            JBoss EAP -->
+        <dependency>
+            <groupId>org.jboss.spec.javax.faces</groupId>
+            <artifactId>jboss-jsf-api_2.3_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Import the JAX-RS API, we use provided scope as the API is included
+            in JBoss EAP -->
+        <dependency>
+            <groupId>org.jboss.spec.javax.ws.rs</groupId>
+            <artifactId>jboss-jaxrs-api_2.1_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.jboss.spec.javax.xml.bind</groupId>
             <artifactId>jboss-jaxb-api_2.3_spec</artifactId>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.jboss.spec.javax.annotation</groupId>
-            <artifactId>jboss-annotations-api_1.3_spec</artifactId>
-        </dependency>
+
     </dependencies>
 
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-ejb-plugin</artifactId>
-                <version>3.0.1</version>
-                <configuration>
-                    <!-- this is false by default -->
-                    <generateClient>true</generateClient>
-                    <clientExcludes>
-                        <!-- this will exclude all files under com/example -->
-                        <clientExclude>**/*.xml</clientExclude>
-                        <clientExclude>**/*.sql</clientExclude>
-                        <clientExclude>org/jboss/as/quickstarts/kitchensink_ear/data/MemberRepository.class</clientExclude>
-                        <clientExclude>org/jboss/as/quickstarts/kitchensink_ear/service/MemberRegistration.class</clientExclude>
-                    </clientExcludes>
-                </configuration>
-
-            </plugin>
-        </plugins>
+        <!-- Set the name of the WAR, used as the context root when the app is deployed -->
+        <finalName>${project.artifactId}</finalName>
     </build>
-
 </project>

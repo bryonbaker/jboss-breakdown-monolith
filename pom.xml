@@ -24,12 +24,12 @@
         <version>37</version>
     </parent>
 
-    <groupId>org.jboss.eap.quickstarts</groupId>
+    <groupId>org.jboss.rwx.bank</groupId>
     <artifactId>jboss-breakdown-monolith</artifactId>
     <version>7.4.0.GA</version>
     <packaging>pom</packaging>
-    <name>Quickstart: kitchensink-ear</name>
-    <description>This kitchensink project demonstrates how to use JSF, CDI, JAX-RS, EJB, JPA, and Bean Validation in an application packaged as an EAR</description>
+    <name>RWX Bank</name>
+    <description>This project demonstrates how to break down a monolith with JSF, CDI, JAX-RS, EJB, JPA</description>
 
     <licenses>
         <license>
@@ -40,7 +40,7 @@
     </licenses>
 
     <modules>
-        <module>original-war-monolith</module>
+        <module>original-monolith</module>
         <module>modular</module>
         <module>refactored</module>
     </modules>
@@ -100,24 +100,6 @@
                 <version>${version.server.bom}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <!-- Define the version of the EJB jar so that we don't need
-                to repeat ourselves in every module -->
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>kitchensink-ear-ejb</artifactId>
-                <version>7.4.0.GA</version>
-                <type>ejb</type>
-            </dependency>
-
-            <!-- Define the version of the WAR so that we don't need to repeat
-                ourselves in every module -->
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>kitchensink-ear-web</artifactId>
-                <version>7.4.0.GA</version>
-                <type>war</type>
-                <scope>compile</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
