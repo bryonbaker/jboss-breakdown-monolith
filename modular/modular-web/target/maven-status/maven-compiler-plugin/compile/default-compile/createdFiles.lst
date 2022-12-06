@@ -1,0 +1,4 @@
+org/jboss/rbx/mbank/contact/controller/MemberController.class
+org/jboss/rbx/mbank/contact/rest/JaxRsActivator.class
+org/jboss/rbx/mbank/contact/util/WebResources.class
+org/jboss/rbx/mbank/contact/rest/MemberResourceRESTService.class

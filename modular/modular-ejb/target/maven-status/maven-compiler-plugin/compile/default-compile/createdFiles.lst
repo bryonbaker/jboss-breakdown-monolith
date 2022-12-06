@@ -1,0 +1,5 @@
+org/jboss/rbx/mbank/contact/data/MemberListProducer.class
+org/jboss/rbx/mbank/contact/model/Member.class
+org/jboss/rbx/mbank/contact/util/Resources.class
+org/jboss/rbx/mbank/contact/service/MemberRegistration.class
+org/jboss/rbx/mbank/contact/data/MemberRepository.class

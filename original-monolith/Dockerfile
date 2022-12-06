@@ -10,8 +10,9 @@ COPY jboss-eap-7.4.0.zip ./jboss-eap-7.4.0.zip
 USER jboss
 RUN unzip jboss-eap-7.4.0.zip
 RUN chgrp -R 0 /home/jboss/jboss-eap-7.4 && chmod -R g=u /home/jboss/jboss-eap-7.4
+COPY index.html /home/jboss/jboss-eap-7.4/welcome-content/index.html
 WORKDIR /home/jboss/jboss-eap-7.4
-COPY ./orginal-ear/target/obank.ear /home/jboss/jboss-eap-7.4/standalone/deployments/obank.ear
+COPY ./original-ear/target/obank.ear /home/jboss/jboss-eap-7.4/standalone/deployments/obank.ear
 
 EXPOSE 8080
 CMD ["/home/jboss/jboss-eap-7.4/bin/standalone.sh","-b","0.0.0.0"]

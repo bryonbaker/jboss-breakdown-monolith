@@ -10,6 +10,7 @@ COPY jboss-eap-7.4.0.zip ./jboss-eap-7.4.0.zip
 USER jboss
 RUN unzip jboss-eap-7.4.0.zip
 RUN chgrp -R 0 /home/jboss/jboss-eap-7.4 && chmod -R g=u /home/jboss/jboss-eap-7.4
+COPY index.html /home/jboss/jboss-eap-7.4/welcome-content/index.html
 WORKDIR /home/jboss/jboss-eap-7.4
 COPY ./refactored-ear-frontend/target/frontend.ear /home/jboss/jboss-eap-7.4/standalone/deployments/frontend.ear
 
