@@ -410,10 +410,35 @@ In the next step we will take the frontend out to the public cloud.
 7. View the network status.  
    Type: ```skupper network status``` and press **Enter**  
    ```
-   **REVISIT**
+   ONPREM: jboss-breakdown-monolith$ skupper network status
+   Unable to retrieve network information: context deadline exceeded
+
+   Loading just local information:
+    It is connected to 2 other sites. Number of exposed services: 1
+   Sites:
+   ╰─ [local] d550317 - local 
+      mode: interior
+      name: local
+      namespace: app-modernisation
+      version: quay.io/skupper/skupper-router:2.2.0 (sha256:c0db101caf31)
+      ╰─ Services:
+         ╰─ name: backend
+            address: backend: 8080
+            protocol: tcp
+   ONPREM: jboss-breakdown-monolith$ 
    ```
 
-8. Examine the workloads at the SYDNEY cluster
+8. View the Gateway status  
+   ```
+   ONPREM: jboss-breakdown-monolith$ skupper gateway status
+   Gateway Definition:
+   ╰─ rh-brbaker-bryon type:podman version:2.2.0
+      ╰─ Bindings:
+         ╰─ backend:8080 tcp backend:8080 127.0.0.1 8080
+   ONPREM: jboss-breakdown-monolith$ 
+   ```
+
+9. Examine the workloads at the SYDNEY cluster  
    Type ```oc get svc,pods``` and press **Enter**  
    ```
    SYDNEY: jboss-breakdown-monolith$ oc get svc,pods
@@ -430,7 +455,7 @@ In the next step we will take the frontend out to the public cloud.
    ```
    Observe that the backend is available as a service in SYDNEY, but there are no pods deployed. Application Interconnect has made the on-premises backend application available as a service in every location that is part of the application's mesh network.
 
-9. Continue the progressive migration by deploying the frontend application to SYDNEY.
+10. Continue the progressive migration by deploying the frontend application to SYDNEY.
    Type ```oc apply -f ./yaml/frontend.yaml``` and press **Enter**
    ```
    SYDNEY: jboss-breakdown-monolith$ oc apply -f ./yaml/frontend.yaml 
@@ -440,7 +465,7 @@ In the next step we will take the frontend out to the public cloud.
    SYDNEY: jboss-breakdown-monolith$
    ```
 
-10. Open the frontend from the SYDNEY cluster.
+11. Open the frontend from the SYDNEY cluster.
     Get the url of the frontend: ```oc get route/frontend''' and press **Enter**
     ```
     SYDNEY: jboss-breakdown-monolith$ oc get route/frontend
@@ -449,7 +474,7 @@ In the next step we will take the frontend out to the public cloud.
     SYDNEY: jboss-breakdown-monolith$ 
     ```
 
-11. Copy the url and paste it in a browser. Append the ```/rbank```. E.g.:  
+12. Copy the url and paste it in a browser. Append the ```/rbank```. E.g.:  
     ```http://frontend-app-modernisation.apps.cluster-2k5sp.2k5sp.sandbox1764.opentlc.com/rbank```
     The application is started from the SYDNEY cluster.
     View the queue to demonstrate how it is accessing the backend and database on-premises.
