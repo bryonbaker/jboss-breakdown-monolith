@@ -172,7 +172,9 @@ Navigate to http://localhost:8090/ibank
 6. To run the images for the refactored
 
 ```docker run --rm=true --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgresdb -p 5432:5432 postgres```
+
 ```docker run --rm -d -e BACKEND_PROVIDER_URL=remote+http://host.docker.internal:8180 -p 8080:8080 --name frontend localhost/jboss-demo-backend```
+
 ```docker run --rm -d -e POSTGRES_SERVICE_HOST=host.docker.internal -e POSTGRES_DB=postgresdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8180:8080 --name backend localhost/jboss-demo-backend```
 
 Navigate to http://localhost:8080/rbank
