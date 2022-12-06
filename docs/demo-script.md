@@ -22,12 +22,14 @@ The screenshot below demonstrates how code is within java packages and in the st
 Monoliths have advantage in that it easy to wire and inject services via CDI or Spring Beans together and everything will work. However it is not until we reach a problems such as: scaling work across people/teams or changing database structures affecting the rest of the code.
 
 You can see the injection into the MemberController & MemberResourceRESTService with a nominal backend function to work with a data/persistence layer
+  ```
   @Inject
   private MemberRegistration memberRegistration;
   
   @Inject
   private MemberRepository repository;
-      
+ ```
+
 This is a key dependency that results in a coupled structure with backend and frontends.
 
 ## Part 2
@@ -51,7 +53,7 @@ However there is still the wiring and dependencies between classes as highlighte
 The final refactoring to ensure independence of builds requires a little bit of knowledge and work to 
 1. Ensure the Java bean dependencies between backend and frontend are maintainable. This is achieved with producing an ejb-client jar.
 2. Configure the EJBs to be accssible remotely, thus an interface class needs to be created as well (as below)
-
+```
 @Stateless
 @Remote(MemberRepositoryIF.class)
 @Transactional(Transactional.TxType.REQUIRED)
@@ -60,20 +62,21 @@ public class MemberRepository implements MemberRepositoryIF {
 @Stateless
 @Remote(MemberRegistrationIF.class)
 @Transactional(Transactional.TxType.REQUIRED)
+```
 
 3. The Frontend classes can no  longer simply inject and wire the backend services, so a remote lookup code is needed. This is standard and also requires a 
 user and password to be created in the JBoss server. The returned class matches in the interface.
-
+```
 public static MemberRegistrationIF lookupMemberRegistration() throws NamingException {
   ....
   jndiProperties.put(Context.INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");
   ....
   return (MemberRegistrationIF) context.lookup(MemberRegistrationIF_EJB_LOOKUP);
 }
-
+```
 4. Maven EAR projects were created for the backend and frontend.
 
-The frontend and backend EAR files can now exist in the same or separate JBOSS EAP servers.
+The frontend and backend EAR files can now exist in the same or separate JBOSS EAP servers. The EAP server which is hosting the backend components will require configuration for datasources.
 
 ## Part 3
 Now we have the monolithic application and the refactored front end. The monolith may still have the front end as part of it (**TODO: Need to discuss with Ben**), but now we want to deploy the front end on OpenShift.
