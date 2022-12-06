@@ -13,4 +13,6 @@ The intention is to demonstrate Red Hat Application Interconnect in how a monoli
 ## Instructions
 
 [Setup instructions](./docs/setup.md)  
-[Demo script](./docs/demo-script.md)  
+[Refactor the Monolith](./docs/demo-script.md)  
+[Move the Frontend to OpenShift On-Premises and public cloud](./docs/move-the-frontend.md)  
+[Move the Backend to OpenShift On-Premises](./docs/move-the-backend.md)
