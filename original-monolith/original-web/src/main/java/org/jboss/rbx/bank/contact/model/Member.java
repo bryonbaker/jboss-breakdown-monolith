@@ -36,8 +36,10 @@ import javax.validation.constraints.NotEmpty;
 @SuppressWarnings("serial")
 @Entity
 @XmlRootElement
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@Table(name = "Registrant", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class Member implements Serializable {
+    /** Default value included to remove warning. Remove or modify at will. **/
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue

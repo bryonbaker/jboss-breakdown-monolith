@@ -1,0 +1,23 @@
+FROM registry.access.redhat.com/ubi8/openjdk-8:1.14-5.1666624658
+
+USER root
+WORKDIR /home/jboss
+RUN microdnf update
+RUN microdnf install unzip
+
+COPY ./files/jboss-eap-7.4.0.zip ./jboss-eap-7.4.0.zip
+
+USER jboss
+RUN unzip jboss-eap-7.4.0.zip
+RUN chgrp -R 0 /home/jboss/jboss-eap-7.4 && chmod -R g=u /home/jboss/jboss-eap-7.4
+COPY ./original-monolith/index.html /home/jboss/jboss-eap-7.4/welcome-content/index.html
+COPY ./files/standalone.xml /home/jboss/jboss-eap-7.4/standalone/configuration/standalone.xml
+RUN mkdir -p /home/jboss/jboss-eap-7.4/modules/org
+COPY ./files/pgdatasource/module.xml /home/jboss/jboss-eap-7.4/modules/org/postgresql/main/module.xml
+COPY ./files/pgdatasource/postgresql-42.5.0.jar /home/jboss/jboss-eap-7.4/modules/org/postgresql/main/postgresql-42.5.0.jar
+
+WORKDIR /home/jboss/jboss-eap-7.4
+COPY ./original-monolith/original-ear/target/obank.ear /home/jboss/jboss-eap-7.4/standalone/deployments/obank.ear
+
+EXPOSE 8080
+CMD ["/home/jboss/jboss-eap-7.4/bin/standalone.sh","-b","0.0.0.0"]

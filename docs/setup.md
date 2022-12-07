@@ -144,34 +144,21 @@ Container or Dockerfiles have been provided and images are pre built and accessi
 
 3. Build the images - The jboss-eap-7.4.0.zip file is expected to be in the current directory
 
-```cd ./refactored```
-
-```docker build -t localhost/jboss-demo-backend --file Dockerfile-backend . ```
-
-```docker build -t localhost/jboss-demo-frontend --file Dockerfile-frontend . ```
-
-```cd ../original-war-monolith/```
-
-``` docker build -t localhost/jboss-demo-original --file Dockerfile . ```
-
-
-``` cd ../modular/```
-
-``` docker build -t localhost/jboss-demo-modular --file Dockerfile .```
+```./buildcontainers.sh```
 
 4. To run the images for the original  
-```docker run --rm -d -p 8100:8080 --name original localhost/jboss-demo-original```
+```docker run --rm -d -e POSTGRES_SERVICE_HOST=host.docker.internal -e POSTGRES_DB=postgresdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8100:8080 --name original localhost/jboss-demo-original```
 
 Navigate to http://localhost:8100/obank
 
 5. To run the images for the modular 
-```docker run --rm -d -p 8090:8080 --name modular localhost/jboss-demo-modular```
+```docker run --rm -d -e POSTGRES_SERVICE_HOST=host.docker.internal -e POSTGRES_DB=postgresdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8090:8080 --name modular localhost/jboss-demo-modular```
 
-Navigate to http://localhost:8090/ibank
+Navigate to http://localhost:8090/mbank
 
 6. To run the images for the refactored
 
-```docker run --rm=true --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgresdb -p 5432:5432 postgres```
+```docker run --rm=true -d --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgresdb -p 5432:5432 postgres```
 
 ```docker run --rm -d -e BACKEND_PROVIDER_URL=remote+http://host.docker.internal:8180 -p 8080:8080 --name frontend localhost/jboss-demo-frontend```
 
