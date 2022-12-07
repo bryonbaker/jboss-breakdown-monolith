@@ -154,7 +154,7 @@
                         <password>sa</password>
                     </security>
                 </datasource>
-                <datasource jndi-name="java:jboss/datasources/KitchensinkEarQuickstartPGDS" pool-name="kitchensink-quickstartpg" enabled="true" use-java-context="true">
+                <datasource jndi-name="java:jboss/datasources/PostgresDS" pool-name="postgrespool" enabled="true" use-java-context="true">
                     <connection-url>jdbc:postgresql://${env.POSTGRES_SERVICE_HOST}:5432/${env.POSTGRES_DB}</connection-url>
                     <driver>postgresql</driver>
                     <security>
