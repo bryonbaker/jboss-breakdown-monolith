@@ -26,7 +26,7 @@
     <artifactId>modular-ejb</artifactId>
     <packaging>ejb</packaging>
     <version>7.4.0.GA</version>
-    <name>Intermediate EJB</name>
+    <name>Modular EJB</name>
     <description>Demonstrate how components are logically split into modules</description>
     <licenses>
         <license>

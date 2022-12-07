@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.as.quickstarts.kitchensink_ear.data;
+package org.jboss.rbx.rbank.contact.data;
 
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -26,7 +26,7 @@ import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import java.util.List;
 
-import org.jboss.as.quickstarts.kitchensink_ear.model.Member;
+import org.jboss.rbx.rbank.contact.model.Member;
 
 @Stateless
 @Remote(MemberRepositoryIF.class)

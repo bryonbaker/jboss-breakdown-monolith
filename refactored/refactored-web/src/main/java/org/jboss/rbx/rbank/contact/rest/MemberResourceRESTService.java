@@ -14,15 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.as.quickstarts.kitchensink_ear.rest;
+package org.jboss.rbx.rbank.contact.rest;
 
 import java.util.*;
 
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.persistence.NoResultException;
 import javax.validation.ConstraintViolation;
@@ -39,10 +37,8 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.jboss.as.quickstarts.kitchensink_ear.util.EJBLookupUtil;
-import org.jboss.as.quickstarts.kitchensink_ear.data.MemberRepositoryIF;
-import org.jboss.as.quickstarts.kitchensink_ear.model.Member;
-import org.jboss.as.quickstarts.kitchensink_ear.service.MemberRegistrationIF;
+import org.jboss.rbx.rbank.contact.util.EJBLookupUtil;
+import org.jboss.rbx.rbank.contact.model.Member;
 
 /**
  * JAX-RS Example

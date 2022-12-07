@@ -14,11 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.as.quickstarts.kitchensink_ear.util;
+package org.jboss.rbx.rbank.contact.util;
 
-import javax.enterprise.context.RequestScoped;
+import java.util.logging.Logger;
+
 import javax.enterprise.inject.Produces;
-import javax.faces.context.FacesContext;
+import javax.enterprise.inject.spi.InjectionPoint;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  * This class uses CDI to alias Jakarta EE resources, such as the persistence context, to CDI beans
@@ -32,12 +35,13 @@ import javax.faces.context.FacesContext;
  * private EntityManager em;
  * </pre>
  */
-public class WebResources {
+public class Resources {
+    @Produces
+    @PersistenceContext
+    private EntityManager em;
 
     @Produces
-    @RequestScoped
-    public FacesContext produceFacesContext() {
-        return FacesContext.getCurrentInstance();
+    public Logger produceLog(InjectionPoint injectionPoint) {
+        return Logger.getLogger(injectionPoint.getMember().getDeclaringClass().getName());
     }
-
 }

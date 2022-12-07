@@ -1,6 +1,6 @@
-package org.jboss.as.quickstarts.kitchensink_ear.data;
+package org.jboss.rbx.rbank.contact.data;
 
-import org.jboss.as.quickstarts.kitchensink_ear.model.Member;
+import org.jboss.rbx.rbank.contact.model.Member;
 
 import java.util.List;
 

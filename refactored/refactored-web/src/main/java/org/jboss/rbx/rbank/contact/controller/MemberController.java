@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.rbx.mbank.contact.controller;
+package org.jboss.rbx.rbank.contact.controller;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
@@ -23,16 +23,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.enterprise.event.Event;
 
-import org.jboss.as.quickstarts.kitchensink_ear.util.EJBLookupUtil;
-import org.jboss.as.quickstarts.kitchensink_ear.model.Member;
-import org.jboss.as.quickstarts.kitchensink_ear.service.MemberRegistrationIF;
-
-import java.util.Hashtable;
+import org.jboss.rbx.rbank.contact.util.EJBLookupUtil;
+import org.jboss.rbx.rbank.contact.model.Member;
+import org.jboss.rbx.rbank.contact.service.MemberRegistrationIF;
 
 // The @Model stereotype is a convenience mechanism to make this a request-scoped bean that has an
 // EL name
@@ -55,7 +50,7 @@ public class MemberController {
         return newMember;
     }
 
-    public void register() throws Exception {
+    public void register() {
         try {
             MemberRegistrationIF memberRegistration = EJBLookupUtil.lookupMemberRegistration();
             memberRegistration.register(newMember);

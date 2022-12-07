@@ -48,7 +48,7 @@ public class MemberController {
         return newMember;
     }
 
-    public void register() throws Exception {
+    public void register() {
         try {
             memberRegistration.register(newMember);
             facesContext.addMessage(null,

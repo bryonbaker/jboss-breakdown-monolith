@@ -14,34 +14,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.as.quickstarts.kitchensink_ear.util;
+package org.jboss.rbx.rbank.contact.service;
 
+import org.jboss.rbx.rbank.contact.model.Member;
+
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.logging.Logger;
 
-import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.InjectionPoint;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+// The @Stateless annotation eliminates the need for manual transaction demarcation
+@Stateless
+@Remote(MemberRegistrationIF.class)
+@Transactional(Transactional.TxType.REQUIRED)
+public class MemberRegistration implements MemberRegistrationIF {
 
-/**
- * This class uses CDI to alias Jakarta EE resources, such as the persistence context, to CDI beans
- *
- * <p>
- * Example injection on a managed bean field:
- * </p>
- *
- * <pre>
- * &#064;Inject
- * private EntityManager em;
- * </pre>
- */
-public class Resources {
-    @Produces
-    @PersistenceContext
+    @Inject
+    private Logger log;
+
+    @Inject
     private EntityManager em;
 
-    @Produces
-    public Logger produceLog(InjectionPoint injectionPoint) {
-        return Logger.getLogger(injectionPoint.getMember().getDeclaringClass().getName());
+
+
+    @Override
+    public void register(Member member) throws Exception {
+        try {
+            log.info("Registering " + member.getName());
+            em.persist(member);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(e.getMessage());
+        }
     }
 }

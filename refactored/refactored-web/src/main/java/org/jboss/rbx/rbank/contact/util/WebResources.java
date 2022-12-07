@@ -14,20 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.as.quickstarts.kitchensink_ear.rest;
+package org.jboss.rbx.rbank.contact.util;
 
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Produces;
+import javax.faces.context.FacesContext;
 
 /**
- * A class extending {@link Application} and annotated with @ApplicationPath is the Jakarta EE "no XML" approach to activating
- * JAX-RS.
+ * This class uses CDI to alias Jakarta EE resources, such as the persistence context, to CDI beans
+ *
  * <p>
- * <p>
- * Resources are served relative to the servlet path specified in the {@link ApplicationPath} annotation.
+ * Example injection on a managed bean field:
  * </p>
+ *
+ * <pre>
+ * &#064;Inject
+ * private EntityManager em;
+ * </pre>
  */
-@ApplicationPath("/rest")
-public class JaxRsActivator extends Application {
-    /* class body intentionally left blank */
+public class WebResources {
+
+    @Produces
+    @RequestScoped
+    public FacesContext produceFacesContext() {
+        return FacesContext.getCurrentInstance();
+    }
+
 }

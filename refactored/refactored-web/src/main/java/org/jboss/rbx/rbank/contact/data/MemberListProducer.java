@@ -14,11 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.as.quickstarts.kitchensink_ear;
+package org.jboss.rbx.rbank.contact.data;
 
-import org.jboss.as.quickstarts.kitchensink_ear.data.MemberRepositoryIF;
-import org.jboss.as.quickstarts.kitchensink_ear.model.Member;
-import org.jboss.as.quickstarts.kitchensink_ear.util.EJBLookupUtil;
+import org.jboss.rbx.rbank.contact.model.Member;
+import org.jboss.rbx.rbank.contact.util.EJBLookupUtil;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -26,10 +25,7 @@ import javax.enterprise.event.Observes;
 import javax.enterprise.event.Reception;
 import javax.enterprise.inject.Produces;
 import javax.inject.Named;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import java.util.Hashtable;
 import java.util.List;
 
 @RequestScoped

@@ -14,32 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.rbx.mbank.contact.service;
+package org.jboss.rbx.rbank.contact.rest;
 
-import org.jboss.rbx.mbank.contact.model.Member;
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
 
-import javax.ejb.Stateless;
-import javax.enterprise.event.Event;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import java.util.logging.Logger;
-
-// The @Stateless annotation eliminates the need for manual transaction demarcation
-@Stateless
-public class MemberRegistration {
-
-    @Inject
-    private Logger log;
-
-    @Inject
-    private EntityManager em;
-
-    @Inject
-    private Event<Member> memberEventSrc;
-
-    public void register(Member member) {
-        log.info("Registering " + member.getName());
-        em.persist(member);
-        memberEventSrc.fire(member);
-    }
+/**
+ * A class extending {@link Application} and annotated with @ApplicationPath is the Jakarta EE "no XML" approach to activating
+ * JAX-RS.
+ * <p>
+ * <p>
+ * Resources are served relative to the servlet path specified in the {@link ApplicationPath} annotation.
+ * </p>
+ */
+@ApplicationPath("/rest")
+public class JaxRsActivator extends Application {
+    /* class body intentionally left blank */
 }
