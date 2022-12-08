@@ -1,0 +1,7 @@
+#ensure the on prem based DB in the VM is exposed
+skupper gateway expose db 127.0.0.1 5432 --type podman
+
+#Run in the terminal after creating the postgres from the developer UI or template
+pg_dump postgresql://postgres:mypassword123@db:5432/postgres | psql -h dbcloud -p 5432 -U postgres postgres
+
+#May need to refresh the backend

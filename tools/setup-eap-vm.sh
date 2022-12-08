@@ -11,7 +11,7 @@ mkdir -p $JBOSS_HOME/modules/org/postgresql/main
 cp ../files/pgdatasource/module.xml $JBOSS_HOME/modules/org/postgresql/main/module.xml
 cp ../files/pgdatasource/postgresql-42.5.0.jar $JBOSS_HOME/modules/org/postgresql/main/postgresql-42.5.0.jar
 
-podman run --rm=true --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgres -d -p 5432:5432 docker.io/library/postgres:latest
+podman run --rm=true --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgres -d -p 5432:5432 docker.io/library/postgres:10
 echo "Pausing for 3 seconds until starting eap"
 sleep 3
 export POSTGRES_SERVICE_HOST=localhost
