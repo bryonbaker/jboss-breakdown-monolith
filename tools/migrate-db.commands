@@ -1,7 +1,17 @@
 #ensure the on prem based DB in the VM is exposed
 skupper gateway expose db 127.0.0.1 5432 --type podman
 
-#Run in the terminal after creating the postgres from the developer UI or template
-pg_dump postgresql://postgres:mypassword123@db:5432/postgres | psql -h dbcloud -p 5432 -U postgres postgres
+#Create the Postgres from a template
 
-#May need to refresh the backend
+oc new-app postgresql-ephemeral --name dbcloud --param DATABASE_SERVICE_NAME=dbcloud --param POSTGRESQL_DATABASE=postgres --param POSTGRESQL_USER=postgres --param POSTGRESQL_PASSWORD=mypassword123
+
+#rsh into the new pod
+
+oc rsh <pod_name>
+
+#Migrate data from skupper based "db" service to the current
+pg_dump postgresql://postgres:mypassword123@db:5432/postgres | PGPASSWORD=mypassword123 psql -h dbcloud -p 5432 -U postgres postgres
+
+#Point the backend to "dbcloud"
+oc set env deployment/backend POSTGRES_SERVICE_HOST=dbcloud
+
