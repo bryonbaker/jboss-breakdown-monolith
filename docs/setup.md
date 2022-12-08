@@ -67,12 +67,12 @@ The new standalone file has the following snippets added
 ```
 
 4. Run a containerised postgres on the VM matching the values in the datasource like so
-```docker run --rm=true --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgresdb -p 5432:5432 postgres```
+```docker run --rm=true --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgres -p 5432:5432 postgres```
 
 5. You can now verify the datasource works by setting the environment variables and starting up JBoss in the foreground like so and see if any errors
 export POSTGRES_SERVICE_HOST=localhost
 export BACKEND_PROVIDER_URL=remote+http://localhost:8080   
-export POSTGRES_DB=postgresdb
+export POSTGRES_DB=postgres
 export POSTGRES_USER=postgres
 export POSTGRES_PASSWORD=mypassword123
 /bin/standalone.sh 
@@ -140,29 +140,29 @@ Container or Dockerfiles have been provided and images are pre built and accessi
 1. Ensure you have built all the artifacts with an mvn clean install
 
 2. Run a containerised postgres on the VM matching the values in the datasource like so
-```docker run --rm=true --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgresdb -p 5432:5432 postgres```
+```docker run --rm=true --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgres -p 5432:5432 postgres```
 
 3. Build the images - The jboss-eap-7.4.0.zip file is expected to be in the current directory
 
 ```./buildcontainers.sh```
 
 4. To run the images for the original  
-```docker run --rm -d -e POSTGRES_SERVICE_HOST=host.docker.internal -e POSTGRES_DB=postgresdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8100:8080 --name original localhost/jboss-demo-original```
+```docker run --rm -d -e POSTGRES_SERVICE_HOST=host.docker.internal -e POSTGRES_DB=postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8100:8080 --name original localhost/jboss-demo-original```
 
 Navigate to http://localhost:8100/obank
 
 5. To run the images for the modular 
-```docker run --rm -d -e POSTGRES_SERVICE_HOST=host.docker.internal -e POSTGRES_DB=postgresdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8090:8080 --name modular localhost/jboss-demo-modular```
+```docker run --rm -d -e POSTGRES_SERVICE_HOST=host.docker.internal -e POSTGRES_DB=postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8090:8080 --name modular localhost/jboss-demo-modular```
 
 Navigate to http://localhost:8090/mbank
 
 6. To run the images for the refactored
 
-```docker run --rm=true -d --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgresdb -p 5432:5432 postgres```
+```docker run --rm=true -d --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgres -p 5432:5432 postgres```
 
 ```docker run --rm -d -e BACKEND_PROVIDER_URL=remote+http://host.docker.internal:8180 -p 8080:8080 --name frontend localhost/jboss-demo-frontend```
 
-```docker run --rm -d -e POSTGRES_SERVICE_HOST=host.docker.internal -e POSTGRES_DB=postgresdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8180:8080 --name backend localhost/jboss-demo-backend```
+```docker run --rm -d -e POSTGRES_SERVICE_HOST=host.docker.internal -e POSTGRES_DB=postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8180:8080 --name backend localhost/jboss-demo-backend```
 
 Navigate to http://localhost:8080/rbank
 
@@ -178,9 +178,9 @@ Navigate to http://localhost:8100/obank
 Navigate to http://localhost:8090/ibank
 
 3. To run the images for the refactored
-```docker run --rm=true --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgresdb -p 5432:5432 postgres```
+```docker run --rm=true --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgres -p 5432:5432 postgres```
 ```docker run --rm -d -e BACKEND_PROVIDER_URL=remote+http://host.docker.internal:8180 -p 8080:8080 --name frontend quay.io/bfarr/jboss-demo-backend```
-```docker run --rm -d -e POSTGRES_SERVICE_HOST=host.docker.internal -e POSTGRES_DB=postgresdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8180:8080 --name backend quay.io/bfarr/jboss-demo-backend```
+```docker run --rm -d -e POSTGRES_SERVICE_HOST=host.docker.internal -e POSTGRES_DB=postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8180:8080 --name backend quay.io/bfarr/jboss-demo-backend```
 
 Navigate to http://localhost:8080/rbank
 
@@ -189,13 +189,13 @@ Navigate to http://localhost:8080/rbank
 
 
 
-docker run -e POSTGRES_SERVICE_HOST=localhost -e BACKEND_PROVIDER_URL=remote+http://localhost:8080 -e POSTGRES_DB=postgresdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8080:8080 localhost/jboss-monolith 
+docker run -e POSTGRES_SERVICE_HOST=localhost -e BACKEND_PROVIDER_URL=remote+http://localhost:8080 -e POSTGRES_DB=postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8080:8080 localhost/jboss-monolith 
 
 
-docker run -e POSTGRES_SERVICE_HOST=host.docker.internal -e BACKEND_PROVIDER_URL=remote+http://localhost:8080 -e POSTGRES_DB=postgresdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8080:8080 localhost/jboss-monolith 
+docker run -e POSTGRES_SERVICE_HOST=host.docker.internal -e BACKEND_PROVIDER_URL=remote+http://localhost:8080 -e POSTGRES_DB=postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8080:8080 localhost/jboss-monolith 
 
 
 
-docker run --rm -d --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgresdb -p 5432:5432 postgres
- docker run --rm -d -e POSTGRES_SERVICE_HOST=host.docker.internal -e POSTGRES_DB=postgresdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8080:8080 --name backend quay.io/bfarr/jboss-demo-backend
+docker run --rm -d --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgres -p 5432:5432 postgres
+ docker run --rm -d -e POSTGRES_SERVICE_HOST=host.docker.internal -e POSTGRES_DB=postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8080:8080 --name backend quay.io/bfarr/jboss-demo-backend
  docker run --rm -d -e BACKEND_PROVIDER_URL=remote+http://host.docker.internal:8080 -p 8180:8080 --name frontend quay.io/bfarr/jboss-demo-frontend
