@@ -2,6 +2,14 @@
 
 ## Running on EAP
 
+On a VM or your laptop the following will be required and available on the PATH
+
+- Maven - ```sudo yum install maven```
+- Java 8 or 11
+- Skupper ```curl https://skupper.io/install.sh | sh```
+- oc cli tool available from the OpenShift cluster 
+- kubectl  - i.e. ```curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"```
+
 To demonstrate it running it on a single EAP server in a VM the following steps are required.
 
 1. Download EAP 7.4 Zip file. The ZIP file is located at the following URL: https://developers.redhat.com/products/eap/download
@@ -10,93 +18,24 @@ Scroll down to the 7.4.0 release and click **Download** on the Zip file.
 You should now have a place where this is unzipped like so
 /jboss-eap-7.4/
 
-2. Build the project
-use Java 8 and install Maven
+2. Git Clone this project and build it
 ```mvn clean install```  
 
+3. Run the script under tools to deploy and launch JBOSS EAP with all builds and a postgres DB running in a container , adjust the JBOSS_HOME if required
+- ```cd tools```
+- ```./setup-eap-vm.sh```
 
-3. For the Server to run the refactored Backend - JBoss server we will need to setup some configuration 
+4. To shutdown the server in foreground press CTRL-C or if running in the background the JBOSS cli can be used to connect to the instance and shut it down.
 
-a. Postgres Driver
-In the jboss-eap-7.4/bin directory  
-```wget https://jdbc.postgresql.org/download/postgresql-42.5.0.jar```
-
-Start the server in the background  
-```./standalone.sh &```
-
-Invoke the CLI and connect to the management console and add the postgressql module and datasource driver  
-
-```./jboss-cli.sh --connect```  
-
-```
-module add --name=org.postgresql --resources=postgresql-42.5.0.jar --dependencies=javax.api,javax.transaction.api
-```  
-Then enter this command:
-```
-/subsystem=datasources/jdbc-driver=postgresql:add(driver-name=postgresql,driver-module-name=org.postgresql,driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)
-```
-
-
-Now shutdown the server and exit from the CLI  
+```$JBOSS_HOME/bin/jboss-cli.sh --connect```  
 ```shutdown```  
 ```exit```
 
-4. The standalone.xml now needs to adjust, the following standalone.xml can be used
-
-```./refactored-ear-backend/standalone.xml```
- and copied to the directory /jboss-eap-7.4/standalone/configuration/standalone.xml
-
-The new standalone file has the following snippets added
-
-```xml
-<datasource jndi-name="java:jboss/datasources/KitchensinkEarQuickstartPGDS" pool-name="kitchensink-quickstartpg" enabled="true" use-java-context="true">
-                    <connection-url>jdbc:postgresql://${env.POSTGRES_SERVICE_HOST}:5432/${env.POSTGRES_DB}</connection-url>
-                    <driver>postgresql</driver>
-                    <security>
-                        <user-name>${env.POSTGRES_USER}</user-name>
-                        <password>${env.POSTGRES_PASSWORD}</password>
-                    </security>
-                </datasource>
-
-```
-
-```xml
-    <driver name="postgresql" module="org.postgresql">
-        <xa-datasource-class>org.postgresql.xa.PGXADataSource</xa-datasource-class>
-    </driver>
-```
-
-4. Run a containerised postgres on the VM matching the values in the datasource like so
-```docker run --rm=true --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgres -p 5432:5432 postgres```
-
-5. You can now verify the datasource works by setting the environment variables and starting up JBoss in the foreground like so and see if any errors
-export POSTGRES_SERVICE_HOST=localhost
-export BACKEND_PROVIDER_URL=remote+http://localhost:8080   
-export POSTGRES_DB=postgres
-export POSTGRES_USER=postgres
-export POSTGRES_PASSWORD=mypassword123
-/bin/standalone.sh 
-
-Stop JBOSS
-
-6. Add a user that the frontend is using to connect to the backend
-/jboss-eap-7.4/bin/add-user.sh -a -u 'jboss' -p 'jboss'
-
-7. Copy the artifacts into the standalone/deployments directory
-
-
-All dependencies have separated web contexts and can be run in parallel. The original and modular use an in memeory H2 database and not postgres.
-
-```cp ./modular/modular-ear/target/modular-ear.ear ./jboss-eap-7.4/standalone/deployments```  (use http://localhost:8080/obank )
-```cp ./original-war-monolith/target/orginal-war-monolith.war ./jboss-eap-7.4/standalone/deployments```  (use http://localhost:8080/ibank )
-```cp ./refactored/refactored-ear-backend/target/backend.ear ./jboss-eap-7.4/standalone/deployments```  (use http://localhost:8080/rbank )
-```cp ./refactored/refactored-ear-frontend/target/frontend.ear ./jboss-eap-7.4/standalone/deployments``` 
-
-8. Start JBoss
-
-You can now verify it works by starting up JBoss and check the different applications
-/bin/standalone.sh 
-
+5. All dependencies have separated web contexts and can be run in parallel. The original and modular use an in memeory H2 database and not postgres.
+Navigate to the following
+- Original Code - http://localhost:8080/obank
+- Modular Code - http://localhost:8080/mbank
+- Refactored Code - http://localhost:8080/rbank
 
 ##To demonstrate it running it on mulitple EAP servers in a single VM the following steps are required.
 
@@ -140,7 +79,7 @@ Container or Dockerfiles have been provided and images are pre built and accessi
 1. Ensure you have built all the artifacts with an mvn clean install
 
 2. Run a containerised postgres on the VM matching the values in the datasource like so
-```docker run --rm=true --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgres -p 5432:5432 postgres```
+```docker run --rm=true --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgres -p 5432:5432 docker.io/library/postgres:10```
 
 3. Build the images - The jboss-eap-7.4.0.zip file is expected to be in the current directory
 
@@ -158,7 +97,7 @@ Navigate to http://localhost:8090/mbank
 
 6. To run the images for the refactored
 
-```docker run --rm=true -d --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgres -p 5432:5432 postgres```
+```docker run --rm=true -d --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgres -p 5432:5432 docker.io/library/postgres:10```
 
 ```docker run --rm -d -e BACKEND_PROVIDER_URL=remote+http://host.docker.internal:8180 -p 8080:8080 --name frontend localhost/jboss-demo-frontend```
 
@@ -178,24 +117,55 @@ Navigate to http://localhost:8100/obank
 Navigate to http://localhost:8090/ibank
 
 3. To run the images for the refactored
-```docker run --rm=true --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgres -p 5432:5432 postgres```
+```docker run --rm=true --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgres -p 5432:5432 docker.io/library/postgres:10```
 ```docker run --rm -d -e BACKEND_PROVIDER_URL=remote+http://host.docker.internal:8180 -p 8080:8080 --name frontend quay.io/bfarr/jboss-demo-backend```
 ```docker run --rm -d -e POSTGRES_SERVICE_HOST=host.docker.internal -e POSTGRES_DB=postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8180:8080 --name backend quay.io/bfarr/jboss-demo-backend```
 
 Navigate to http://localhost:8080/rbank
 
 
-### To demonstrate it running it with Red Hat Application Interconnect and OpenShift
+## To demonstrate a progressive migration with Red Hat Application Interconnect and OpenShift
+
+### DEMONSTRATE Current State
+1. Run the refactored code builds Frontend/Backend/Postgres to run in a VM OR in containers as described above.
 
 
+### REPLATFORM the FRONTEND
+2. Create a new project in OpenShift and login with oc or kubectl
+3. Initialise skupper in the environment
+```skupper init --site-name mycloud  --console-auth=internal --console-user=admin --console-password=password```
+4. Initialise the gateway on the VM and expose the running EAP service or Backend service (adjust port as required)
+```skupper gateway init --type podman```
+```skupper gateway expose backend 127.0.0.1:8080 --type podman```
+5. Deploy the frontend on OpenShift
+```oc apply -f ./yaml/frontend.yaml```
+6. Navigate to the Frontend Route and it should connect to the backend. Demonstrate by looking at the queue in both frontends in the VM and OpenShift. 
 
-docker run -e POSTGRES_SERVICE_HOST=localhost -e BACKEND_PROVIDER_URL=remote+http://localhost:8080 -e POSTGRES_DB=postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8080:8080 localhost/jboss-monolith 
+### REPLATFORM the BACKEND
+7. Remove the backend from skupper gateway - (the frontend on OCP will currently not work)
+```skupper gateway unbind backend```
+```skupper gateway unexpose backend```
+8. Expose the Database via the gateway
+```skupper gateway expose db 127.0.0.1 5432 --type podman```
+9. Deploy the backend on OpenShift
+```oc apply -f ./yaml/backend.yaml```
+10. Launch the frontend route on OpenShift again, this time it should talk to the backend on OpenShift and the backend will communicate to the database on the VM.
 
+### REPLATFORM the DATABASE and MIGRATE
+The final step is we can run the database on OpenShift and migrate the data to the new container
 
-docker run -e POSTGRES_SERVICE_HOST=host.docker.internal -e BACKEND_PROVIDER_URL=remote+http://localhost:8080 -e POSTGRES_DB=postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8080:8080 localhost/jboss-monolith 
+11. Create a new postgres database in the OpenShift project
+```oc new-app postgresql-ephemeral --name dbcloud --param DATABASE_SERVICE_NAME=dbcloud --param POSTGRESQL_DATABASE=postgres --param POSTGRESQL_USER=postgres --param POSTGRESQL_PASSWORD=mypassword123```
+12. Once the pod is running rsh into the pod
+```oc rsh <pod_name>```
+13. Migrate the data and schema from our postgres in the VM which is still attached via the skupper gateway. Within the remote shell of the postgres pod dbcloud
+```pg_dump postgresql://postgres:mypassword123@db:5432/postgres | PGPASSWORD=mypassword123 psql -h dbcloud -p 5432 -U postgres postgres```
+```exit```
+14. We now can switch the backend to point to the new database in the cloud. This will restart the backend, the frontend doesn't need to be restarted.
+```oc set env deployment/backend POSTGRES_SERVICE_HOST=dbcloud```
 
+15. You can now unbind the VM based database via the gateway
+```skupper gateway unbind db```
+```skupper gateway unexpose db```
 
-
-docker run --rm -d --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -e POSTGRES_DB=postgres -p 5432:5432 postgres
- docker run --rm -d -e POSTGRES_SERVICE_HOST=host.docker.internal -e POSTGRES_DB=postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8080:8080 --name backend quay.io/bfarr/jboss-demo-backend
- docker run --rm -d -e BACKEND_PROVIDER_URL=remote+http://host.docker.internal:8080 -p 8180:8080 --name frontend quay.io/bfarr/jboss-demo-frontend
+16. Demonstrate how both the refactored and original are now using independent databases by adding a new value to the Queue and observing it doesnt appear on the other.
