@@ -24,3 +24,4 @@ $JBOSS_HOME/bin/standalone.sh -b 0.0.0.0
 
 
 # curl https://skupper.io/install.sh | sh (install skupper)
+# install oc and kubectl as well
