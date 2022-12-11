@@ -40,3 +40,4 @@ Unbind the Backend:
 5. Demonstrate the application working  
 
 6. Open the RHAI Console and demonstrate the new application topology and review how the wqhole progressive approach was enabled by RHAI. 
+![Front screen](./images/migrated-backend.png)
