@@ -18,13 +18,25 @@ In this demonstration we will deploy the backend onto OpenShift on-premises, and
    ONPREM: jboss-breakdown-monolith$ 
    ```
 
-2. Expose the database to the network
-   ```skupper gateway expose db 127.0.0.1 5432 --type podman```
+2. Expose the database to the network  
+We need to make the database visible to the application on OpenShift as a local service.  
+Note: In a real life scenario this would probably be resolved via DNS and an unessary step.  
+```skupper gateway expose db 127.0.0.1 5432 --type podman```
+RHAI creates a service proxy in the service network.
 
-3. Remove the backend from the gateway
-   ```skupper gateway unexpose backend```
+3. Open the RHAI Console and show the new service in the Gateway.
 
-4. Expose the backend to the RHAI network
-   ```skupper expose deployment backend --port 8080```
+4. Remove the backend from the gateway.  
+Unexpose the Backend:  
+```skupper gateway unexpose backend```  
+Unbind the Backend:  
+  ```skupper gateway unbind backend```  
+**Note:** Sometimes these two commands cause the Gateway to die. If that happens just re-run this command: ```skupper gateway expose db 127.0.0.1 5432 --type podman```  
 
-5. Demonstrate the application working
+4. Expose the backend to the RHAI network:  
+   ```skupper expose deployment backend --port 8080```  
+   **Note:** You need to wait a few seconds for RHAI to propagate the updated network information.
+
+5. Demonstrate the application working  
+
+6. Open the RHAI Console and demonstrate the new application topology and review how the wqhole progressive approach was enabled by RHAI. 
