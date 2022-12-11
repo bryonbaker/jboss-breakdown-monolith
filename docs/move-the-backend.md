@@ -10,19 +10,14 @@ In this demonstration we will deploy the backend onto OpenShift on-premises, and
 
 ## Steps
 
-1. Deploy the backend
-   ```
-   ONPREM: jboss-breakdown-monolith$ oc apply -f ./yaml/backend.yaml 
-   Warning: would violate PodSecurity "restricted:v1.24": allowPrivilegeEscalation != false (container "backend" must set securityContext.allowPrivilegeEscalation=false), unrestricted capabilities (container "backend" must set securityContext.capabilities.drop=["ALL"]), runAsNonRoot != true (pod or container "backend" must set securityContext.runAsNonRoot=true), seccompProfile (pod or container "backend" must set securityContext.seccompProfile.type to "RuntimeDefault" or "Localhost")
-   deployment.apps/backend created
-   ONPREM: jboss-breakdown-monolith$ 
-   ```
-
-2. Expose the database to the network  
+1. Expose the database to the network  
 We need to make the database visible to the application on OpenShift as a local service.  
 Note: In a real life scenario this would probably be resolved via DNS and an unessary step.  
 ```skupper gateway expose db 127.0.0.1 5432 --type podman```
 RHAI creates a service proxy in the service network.
+
+2. Deploy the backend
+   ```oc apply -f ./yaml/backend.yaml```
 
 3. Open the RHAI Console and show the new service in the Gateway.
 
