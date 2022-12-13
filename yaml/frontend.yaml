@@ -45,8 +45,9 @@ spec:
     kind: Service
     name: frontend
     weight: 100
-  tls:
-    termination: edge
+# Commented out because OCP Local does not like the TLS termination. Live with the warning for the demonstration.
+#  tls:
+#    termination: edge
   port:
     targetPort: 8080
   wildcardPolicy: None
