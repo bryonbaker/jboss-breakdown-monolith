@@ -45,9 +45,10 @@ spec:
     kind: Service
     name: frontend
     weight: 100
-# Commented out because OCP Local does not like the TLS termination. Live with the warning for the demonstration.
+# Commented out because OCP Local does not like the TLS termination. Live with the warning for the demonstration. - To test with insecure term policy
 #  tls:
 #    termination: edge
+#    insecureEdgeTerminationPolicy: Redirect
   port:
     targetPort: 8080
   wildcardPolicy: None
