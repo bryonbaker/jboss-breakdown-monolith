@@ -24,11 +24,11 @@ spec:
         - name: POSTGRES_SERVICE_HOST
           value: db
         - name: POSTGRES_USER
-          value: demo
+          value: postgres
         - name: POSTGRES_PASSWORD
           value: mypassword123
         - name: POSTGRES_DB
-          value: demo-db
+          value: postgres
 # ---
 # apiVersion: v1
 # kind: Service
