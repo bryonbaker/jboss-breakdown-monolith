@@ -152,7 +152,7 @@ The next phase of the demonstration will create a new OpenShift project to host 
 Now we have a new project, install Application Interconnect
 
 1. Install RHAI into the project:  
-```skupper init --site-name local --console-auth=internal --console-user=admin --console-password=password```
+```skupper init --site-name local  --enable-console --enable-flow-collector --console-auth=internal --console-user=admin --console-password=password```
 
 The system installes RHAI and assignes the username and password for the administrator console.
 
@@ -380,7 +380,7 @@ In the next step we will take the frontend out to the public cloud.
    OpenShift creates the new project.  
 
 4. Install RHAI
-   ```skupper init --site-name sydney --console-auth=internal --console-user=admin --console-password=password```  
+   ```skupper init --site-name sydney  --enable-console --enable-flow-collector --console-auth=internal --console-user=admin --console-password=password```  
    Skupper is installed in the project.  
    At this point skupper is installed, but the mesh network is not established.
 

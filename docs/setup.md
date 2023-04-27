@@ -119,7 +119,7 @@ docker run --rm=true -d --name pgdb -e POSTGRES_USER=postgres -e POSTGRES_PASSWO
 ```
 
 ```
-docker run --rm -d -e BACKEND_PROVIDER_URL=remote+http://host.docker.internal:8180 -p 8080:8080 --name frontend localhost/jboss-demo-frontend
+docker run --rm -d -e BACKEND_PROVIDER_URL=remote+http://host.docker.internal:8180 -p 8180:8080 --name frontend localhost/jboss-demo-frontend
 ```
 ```
 docker run --rm -d -e POSTGRES_SERVICE_HOST=host.docker.internal -e POSTGRES_DB=postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=mypassword123 -p 8180:8080 --name backend localhost/jboss-demo-backend
@@ -166,7 +166,7 @@ Navigate to http://localhost:8080/rbank
 2. Create a new project in OpenShift and login with oc or kubectl
 3. Initialise skupper in the environment
 ```
-skupper init --site-name mycloud  --console-auth=internal --console-user=admin --console-password=password
+skupper init --site-name mycloud  --enable-console --enable-flow-collector  --console-auth=internal --console-user=admin --console-password=password
 ```
 4. Initialise the gateway on the VM and expose the running EAP service or Backend service (adjust port as required)
 ```

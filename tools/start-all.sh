@@ -1,5 +1,10 @@
 #! /bin/bash
 
+# Clean up the environment
+rm -rf ~/.local/share/skupper
+podman kill --all
+podman system prune --force
+
 # Check that one of Podman or Docker is installed.
 echo "Checking for container runtime..."
 runtime=$(which podman)
