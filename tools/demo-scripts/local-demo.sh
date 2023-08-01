@@ -50,7 +50,7 @@ pe "oc apply -f ./yaml/frontend.yaml"
 
 pe "watch oc get pods,svc"
 
-pe "skupper init --site-name local --enable-console --enable-flow-collector --console-auth=internal --console-user=admin --console-password=password"
+pe "skupper init --site-name on-prem --enable-console --enable-flow-collector --console-auth=internal --console-user=admin --console-password=password"
 
 pe "watch oc get svc,pods"
 
@@ -60,11 +60,16 @@ pe "watch podman ps"
 
 pe "oc get svc,pods"
 
-pe "oc get svc/backend -o yaml"
-
 pe "skupper gateway status"
 
 pe "skupper network status"
+
+pe "oc get svc/backend -o yaml"
+
+# Decommission the on-premises frontend
+pe "podman kill frontend"
+
+echo "*** Move to Sydney ***"
 
 # Migrate the frontend to the public cloud
 pe "skupper link create sydney-token.yaml"
@@ -72,3 +77,24 @@ pe "skupper link create sydney-token.yaml"
 pe "skupper network status"
 
 pe "oc delete -f yaml/frontend.yaml"
+
+# Now let's move the backend
+pe
+
+pe "skupper gateway expose db 127.0.0.1 5432 --type podman"
+
+pe "oc apply -f ./yaml/backend.yaml"
+
+pe "watch oc get pods,svc"
+
+# TODO: Display the logs of the backend pod to make sure it is connecting
+pe
+
+pe "skupper gateway unexpose backend"
+
+pe "skupper gateway status"
+pe
+
+pe "skupper expose deployment backend --port 8080"
+
+pe "skupper network status"
