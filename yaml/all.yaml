@@ -89,9 +89,9 @@ spec:
     kind: Service
     name: frontend
     weight: 100
-   tls:
-     termination: edge
-     insecureEdgeTerminationPolicy: Redirect
-  port:
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+    port:
     targetPort: 8080
-  wildcardPolicy: None
+    wildcardPolicy: None
