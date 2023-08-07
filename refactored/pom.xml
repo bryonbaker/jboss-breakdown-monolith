@@ -17,6 +17,7 @@
         <module>refactored-web</module>
         <module>refactored-ear-backend</module>
         <module>refactored-ear-frontend</module>
+        <module>refactored-ejb-healthcheck</module>
     </modules>
 
 </project>
