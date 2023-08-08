@@ -16,6 +16,25 @@ spec:
     spec:
       containers:
       - name: backend
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 7
+          timeoutSeconds: 1
+          periodSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
+        livenessProbe:
+          exec:
+            command:
+              - /home/jboss/jboss-eap-7.4/backendhealth.sh
+          initialDelaySeconds: 20
+          timeoutSeconds: 3
+          periodSeconds: 10
+          successThreshold: 1
+          failureThreshold: 2
         image: quay.io/bfarr/jboss-demo-backend
         imagePullPolicy: Always
         ports:
