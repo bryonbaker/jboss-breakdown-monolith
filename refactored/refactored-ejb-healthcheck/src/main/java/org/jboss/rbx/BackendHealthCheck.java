@@ -8,18 +8,21 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.logging.LogManager;
 
 public class BackendHealthCheck {
 
     private static final String MemberRepositoryIF_EJB_LOOKUP = "ejb:backend/ejb/MemberRepository!org.jboss.rbx.rbank.contact.data.MemberRepositoryIF";
 
     public static void main(String[] args) {
-        
+        LogManager.getLogManager().reset();
+
         try {
             List<Member> members = lookupMemberRepository().findAllOrderedByName();
+            System.exit(0);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException(e);
+            System.exit(1);
         }
     }
 

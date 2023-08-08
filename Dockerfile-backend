@@ -7,15 +7,21 @@ RUN microdnf install unzip
 
 COPY ./files/jboss-eap-7.4.0.zip ./jboss-eap-7.4.0.zip
 
+
 USER jboss
 RUN unzip jboss-eap-7.4.0.zip
+
 RUN chgrp -R 0 /home/jboss/jboss-eap-7.4 && chmod -R g=u /home/jboss/jboss-eap-7.4
+
 WORKDIR /home/jboss/jboss-eap-7.4
 COPY ./refactored/refactored-ear-backend/target/backend.ear /home/jboss/jboss-eap-7.4/standalone/deployments/backend.ear
+COPY ./refactored/refactored-ejb-healthcheck/target/backendhealthcheck-jar-with-dependencies.jar /home/jboss/backendhealthcheck-jar-with-dependencies.jar
+
 COPY ./files/standalone.xml /home/jboss/jboss-eap-7.4/standalone/configuration/standalone.xml
 RUN mkdir -p /home/jboss/jboss-eap-7.4/modules/org
 COPY ./files/pgdatasource/module.xml /home/jboss/jboss-eap-7.4/modules/org/postgresql/main/module.xml
 COPY ./files/pgdatasource/postgresql-42.5.0.jar /home/jboss/jboss-eap-7.4/modules/org/postgresql/main/postgresql-42.5.0.jar
+COPY ./files/backendhealth.sh /home/jboss/jboss-eap-7.4/backendhealth.sh
 
 RUN /home/jboss/jboss-eap-7.4/bin/add-user.sh -a -u 'jboss' -p 'jboss'
 
