@@ -46,7 +46,7 @@ cmd
 pe "watch podman ps"
 
 #Deploy the frontend
-pe "oc apply -f ./yaml/frontend.yaml"
+pe "oc apply -f ./yaml/frontend-dep.yaml"
 
 pe "watch oc get pods,svc"
 
@@ -76,14 +76,14 @@ pe "skupper link create sydney-token.yaml"
 
 pe "skupper network status"
 
-pe "oc delete -f yaml/frontend.yaml"
+pe "oc delete -f yaml/frontend-dep.yaml"
 
 # Now let's move the backend
 pe
 
 pe "skupper gateway expose db 127.0.0.1 5432 --type podman"
 
-pe "oc apply -f ./yaml/backend.yaml"
+pe "oc apply -f ./yaml/backend-dep.yaml"
 
 pe "watch oc get pods,svc"
 
