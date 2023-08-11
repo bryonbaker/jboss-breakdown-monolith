@@ -44,7 +44,7 @@ cmd
 
 # Migrate the frontend to the public cloud
 
-pe "oc apply -f yaml/frontend.yaml"
+pe "oc apply -f yaml/frontend-dep.yaml"
 
 pe "watch oc get svc,pods"
 

@@ -31,6 +31,8 @@ POSTRES_IMAGE=registry.redhat.io/rhel8/postgresql-13:1-56.1654147925
 BACKEND_IMAGE=quay.io/bfarr/jboss-demo-backend
 FRONTEND_IMAGE=quay.io/bfarr/jboss-demo-frontend
 
+# If you want the data to persist across sessions use this option:
+# -v /host/db/path:/var/lib/pgsql/data
 $CONTAINER_RUNTIME run --rm -d --name pgdb -e POSTGRESQL_USER=$PGSQL_USER -e POSTGRESQL_PASSWORD=$PGSQL_PASSWORD -e POSTGRESQL_DATABASE=$PGSQL_DB -p 5432:5432 $POSTRES_IMAGE
 sleep 5
 
