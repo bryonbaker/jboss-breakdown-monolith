@@ -1,4 +1,7 @@
-#oc login
+#Run these commands one by one at this stage
+#Use oc or kubectl to login
+#oc login ...
+# Install skupper in a RHEL 8/9 VM
 #curl https://skupper.io/install.sh | sh
 
 oc new-project app-modernisation
