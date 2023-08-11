@@ -33,15 +33,4 @@ spec:
       volumes:
         - name: database-volume
           emptyDir: {} # This defines the emptyDir volume
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: db
-spec:
-  selector:
-    app: db
-  ports:
-    - protocol: TCP
-      port: 5432
-      targetPort: 5432
+
