@@ -76,7 +76,7 @@ pe "skupper link create sydney-token.yaml"
 
 pe "skupper network status"
 
-pe "oc delete -f yaml/frontend.yaml"
+pe "oc delete -f yaml/frontend-dep.yaml"
 
 # Now let's move the backend
 pe
