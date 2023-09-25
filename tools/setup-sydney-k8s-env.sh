@@ -4,7 +4,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 #m Edit these two environment variables as you create more environment setup scripts.
-export ENVIRONMENT_PROMPT="SYDNEY"
+export ENVIRONMENT_PROMPT="PUBLIC CLOUD"
 export KUBECONFIG=$HOME/.kube/app-modernisation-sydney
 
 printf "Setting up isolated Kubernetes environment in: ${YELLOW}$KUBECONFIG${NC}\n"
