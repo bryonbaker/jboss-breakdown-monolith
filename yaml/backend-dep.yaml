@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app: backend
+    application: backend-app
   name: backend
 spec:
   replicas: 1
@@ -13,6 +14,7 @@ spec:
     metadata:
       labels:
         app: backend
+        application: backend-app
     spec:
       containers:
       - name: backend

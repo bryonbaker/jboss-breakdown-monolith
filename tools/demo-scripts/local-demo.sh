@@ -98,3 +98,6 @@ pe
 pe "skupper expose deployment backend --port 8080"
 
 pe "skupper network status"
+
+pe "podman delete backend"
+pe
